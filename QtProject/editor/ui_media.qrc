@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/iphone_templates">
+        <file>iphone4_hor.png</file>
+        <file>iphone4_vert.png</file>
+    </qresource>
+</RCC>
