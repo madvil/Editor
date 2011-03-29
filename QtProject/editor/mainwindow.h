@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "qtpropertybrowser/qttreepropertybrowser.h"
+#include "propertymanagers.h"
 
 namespace Ui {
     class MainWindow;
@@ -17,6 +19,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QtTreePropertyBrowser *propertyBrowser;
+    PropertyManagers *propertyManagers;
+
 };
 
 #endif // MAINWINDOW_H

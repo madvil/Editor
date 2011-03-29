@@ -19,7 +19,10 @@ SOURCES += main.cpp\
     qtpropertybrowser/qtpropertybrowser.cpp \
     qtpropertybrowser/qtgroupboxpropertybrowser.cpp \
     qtpropertybrowser/qteditorfactory.cpp \
-    qtpropertybrowser/qtbuttonpropertybrowser.cpp
+    qtpropertybrowser/qtbuttonpropertybrowser.cpp \
+    entity.cpp \
+    baseobject.cpp \
+    propertymanagers.cpp
 
 HEADERS  += mainwindow.h \
     test.h \
@@ -30,7 +33,11 @@ HEADERS  += mainwindow.h \
     qtpropertybrowser/qtpropertybrowser.h \
     qtpropertybrowser/qtgroupboxpropertybrowser.h \
     qtpropertybrowser/qteditorfactory.h \
-    qtpropertybrowser/qtbuttonpropertybrowser.h
+    qtpropertybrowser/qtbuttonpropertybrowser.h \
+    entity.h \
+    baseobject.h \
+    propertymanagers.h \
+    constants.h
 
 FORMS    += mainwindow.ui
 
