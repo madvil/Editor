@@ -124,8 +124,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>734</width>
-       <height>382</height>
+       <width>736</width>
+       <height>388</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -151,7 +151,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="ui_media.qrc">:/iphone_templates/iphone4_hor.png</pixmap>
+         <pixmap resource="ui_media.qrc">:/iphone_templates/media/iphone4_hor.png</pixmap>
         </property>
        </widget>
       </item>
@@ -178,7 +178,7 @@
      <x>0</x>
      <y>0</y>
      <width>873</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
