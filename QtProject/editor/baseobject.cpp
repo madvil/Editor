@@ -14,11 +14,6 @@ BaseObject::BaseObject(QtAbstractPropertyBrowser *propertyBrowser)
     setName(DEFAULT_NAME);
 }
 
-BaseObject::~BaseObject()
-{
-
-}
-
 void BaseObject::setRootName(QString name)
 {
     rootProperty->setPropertyName(name);

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui opengl
 
 TARGET = editor
 TEMPLATE = app
@@ -22,7 +22,10 @@ SOURCES += main.cpp\
     qtpropertybrowser/qtbuttonpropertybrowser.cpp \
     entity.cpp \
     baseobject.cpp \
-    propertymanagers.cpp
+    propertymanagers.cpp \
+    texturelistitemwidget.cpp \
+    glwidget.cpp \
+    scene.cpp
 
 HEADERS  += mainwindow.h \
     test.h \
@@ -37,9 +40,13 @@ HEADERS  += mainwindow.h \
     entity.h \
     baseobject.h \
     propertymanagers.h \
-    constants.h
+    constants.h \
+    texturelistitemwidget.h \
+    glwidget.h \
+    scene.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    texturelistitemwidget.ui
 
 RESOURCES += \
     ui_media.qrc \

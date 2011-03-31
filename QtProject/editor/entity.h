@@ -8,7 +8,6 @@ class Entity : public BaseObject
     Q_OBJECT
 public:
     Entity(QtAbstractPropertyBrowser *propertyBrowser);
-    ~Entity();
 
     virtual void save(QDataStream *ds) { }
     virtual void load(QDataStream *ds) { }

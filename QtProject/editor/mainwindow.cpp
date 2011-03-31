@@ -4,21 +4,68 @@
 #include "entity.h"
 #include "ui_mainwindow.h"
 
+MainWindow *singletone = 0;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    singletone = this;
     setWindowState(Qt::WindowMaximized);
     setWindowTitle("2D Level Editor");
 
+    scene = new Scene(this);
+
+    //init part
+    initWidgets();
+    initLayouts();
+    initTexturesListWidget();
+
+    Entity *e = new Entity(propertyBrowser);
+    e->setSelected(true);
+
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+    delete propertyBrowser;
+}
+
+MainWindow *MainWindow::getInstance()
+{
+    return singletone;
+}
+
+void MainWindow::startUpdating()
+{
+    timer->start(5);
+}
+
+bool MainWindow::eventFilter(QObject *target, QEvent *event)
+{
+    return false;
+}
+
+void MainWindow::initWidgets()
+{
+    glWidget = new GLWidget(this, scene);
+    ui->glViewVerticalLayout->addWidget(glWidget);
+
     propertyBrowser = new QtTreePropertyBrowser();
     propertyBrowser->setStyleSheet("border: 0px;");
+    propertyBrowser->setIndentation(12);
     propertyManagers = new PropertyManagers(propertyBrowser);
     ui->generalTabVerticalLayout->addWidget(propertyBrowser);
+}
 
+void MainWindow::initLayouts()
+{
     QSplitter *splitter1 = new QSplitter(Qt::Vertical);
-    splitter1->addWidget(ui->editorViewWidget);
+    splitter1->addWidget(ui->editorTabWidget);
     splitter1->addWidget(ui->bottomPanelWidget);
     splitter1->setCollapsible(0, false);
     splitter1->setCollapsible(1, false);
@@ -38,13 +85,35 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->centralWidget->setLayout(centralLayout);
     ui->centralWidget->setFocus();
     centralLayout->addWidget(splitter2);
-
-    Entity *e = new Entity(propertyBrowser);
-    e->setSelected(true);
 }
 
-MainWindow::~MainWindow()
+void MainWindow::initTexturesListWidget()
 {
-    delete ui;
-    delete propertyBrowser;
+    connect(addTextureItem(0)->getAddButton(), SIGNAL(clicked()), this, SLOT(addNewTexture()));
+}
+
+TextureListItemWidget *MainWindow::addTextureItem(int page)
+{
+    QListWidgetItem *item = new QListWidgetItem(ui->textureListWidget);
+    TextureListItemWidget *textureItem = new TextureListItemWidget();
+    textureItem->setPage(page);
+    item->setSizeHint(QSize(100, 100));
+
+    ui->textureListWidget->setItemWidget(item, textureItem);
+    return textureItem;
+}
+
+void MainWindow::addNewTexture()
+{
+    addTextureItem();
+}
+
+void MainWindow::animate()
+{
+    if (scene->animate())
+    {
+        timer->stop();
+    }
+
+    glWidget->repaint();
 }

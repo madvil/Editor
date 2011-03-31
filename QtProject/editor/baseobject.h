@@ -10,7 +10,6 @@ class BaseObject : public QObject
 
 public:
     BaseObject(QtAbstractPropertyBrowser *propertyBrowser);
-    ~BaseObject();
 
     void setRootName(QString name);
     QString getRootName() const { return rootProperty->propertyName(); }
