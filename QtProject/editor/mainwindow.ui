@@ -131,6 +131,10 @@ QTabWidget::pane {
 
  }
 
+QTabWidget::tab-bar {
+     alignment: left;
+ }
+
  QTabBar::tab {
 	color: rgb(185, 185, 185);
 	
@@ -367,61 +371,43 @@ color:rgb(255,255,255);
      <rect>
       <x>80</x>
       <y>320</y>
-      <width>381</width>
-      <height>331</height>
+      <width>351</width>
+      <height>241</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true"> border: 1px solid #000000;</string>
+     <string notr="true"/>
     </property>
-    <widget class="QPushButton" name="pushButton_8">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>111</width>
-       <height>21</height>
-      </rect>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>0</number>
      </property>
-     <property name="styleSheet">
-      <string notr="true"/>
+     <property name="margin">
+      <number>0</number>
      </property>
-     <property name="text">
-      <string>PushButton</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_9">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>40</y>
-       <width>111</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>PushButton</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_10">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>70</y>
-       <width>111</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>PushButton</string>
-     </property>
-    </widget>
+     <item>
+      <widget class="QTabWidget" name="tabWidget_2">
+       <property name="styleSheet">
+        <string notr="true">QTabWidget::pane { 
+     border: 1px solid #000000;
+ }</string>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="tab_3">
+        <attribute name="title">
+         <string>Textures</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="tab_4">
+        <attribute name="title">
+         <string>Tab 2</string>
+        </attribute>
+       </widget>
+      </widget>
+     </item>
+    </layout>
    </widget>
    <widget class="QTreeWidget" name="treeWidget">
     <property name="geometry">
@@ -448,7 +434,7 @@ color:rgb(255,255,255);
      <x>0</x>
      <y>0</y>
      <width>938</width>
-     <height>24</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -460,9 +446,6 @@ color:rgb(255,255,255);
     <addaction name="actionSave"/>
     <addaction name="actionSave_as_new"/>
     <addaction name="actionLoad"/>
-    <addaction name="separator"/>
-    <addaction name="separator"/>
-    <addaction name="actionExit"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>

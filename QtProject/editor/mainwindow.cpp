@@ -38,6 +38,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->centralWidget->setLayout(centralLayout);
     centralLayout->addWidget(splitter2);
 
+    ui->centralWidget->setFocus();
+
     Entity *e = new Entity(propertyBrowser);
     e->setSelected(true);
 }
