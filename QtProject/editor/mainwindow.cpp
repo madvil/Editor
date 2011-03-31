@@ -36,9 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QHBoxLayout *centralLayout = new QHBoxLayout();
     centralLayout->setMargin(2);
     ui->centralWidget->setLayout(centralLayout);
-    centralLayout->addWidget(splitter2);
-
     ui->centralWidget->setFocus();
+    centralLayout->addWidget(splitter2);
 
     Entity *e = new Entity(propertyBrowser);
     e->setSelected(true);

@@ -317,22 +317,6 @@ color:rgb(255,255,255);
       <string>PushButton</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_5">
-     <property name="geometry">
-      <rect>
-       <x>120</x>
-       <y>40</y>
-       <width>121</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string>PushButton</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="pushButton_6">
      <property name="geometry">
       <rect>
@@ -399,6 +383,22 @@ color:rgb(255,255,255);
         <attribute name="title">
          <string>Textures</string>
         </attribute>
+        <widget class="QPushButton" name="pushButton_5">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>170</y>
+           <width>121</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>PushButton</string>
+         </property>
+        </widget>
        </widget>
        <widget class="QWidget" name="tab_4">
         <attribute name="title">
