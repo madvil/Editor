@@ -21,7 +21,7 @@ void Scene::paint(QPainter *painter, QPaintEvent *event)
     painter->translate(-sliding, 0);
 
     //debug draws
-//    painter->resetMatrix();
+    painter->resetMatrix();
     painter->setPen(debugPen);
     painter->translate(-sliding, 0);
 
