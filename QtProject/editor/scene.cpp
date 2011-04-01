@@ -17,13 +17,11 @@ Scene::Scene(QWidget *parent) : QObject(parent)
 void Scene::paint(QPainter *painter, QPaintEvent *event)
 {
     int deltaHeight = (event->rect().height() / 6);
-    painter->setRenderHint(QPainter::TextAntialiasing);
     painter->fillRect(event->rect(), background);
-    painter->save();
     painter->translate(-sliding, 0);
 
     //debug draws
-    painter->restore();
+//    painter->resetMatrix();
     painter->setPen(debugPen);
     painter->translate(-sliding, 0);
 

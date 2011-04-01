@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     propertymanagers.cpp \
     texturelistitemwidget.cpp \
     glwidget.cpp \
-    scene.cpp
+    scene.cpp \
+    background.cpp
 
 HEADERS  += mainwindow.h \
     test.h \
@@ -43,7 +44,8 @@ HEADERS  += mainwindow.h \
     constants.h \
     texturelistitemwidget.h \
     glwidget.h \
-    scene.h
+    scene.h \
+    background.h
 
 FORMS    += mainwindow.ui \
     texturelistitemwidget.ui
