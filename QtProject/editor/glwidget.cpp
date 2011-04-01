@@ -13,7 +13,6 @@ void GLWidget::paintEvent(QPaintEvent *event)
 {
     QPainter painter;
     painter.begin(this);
-    painter.setRenderHint(QPainter::Antialiasing);
 
     scene->paint(&painter, event);
 
@@ -40,5 +39,14 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event)
     {
         scene->animationSlide(lastXDelta);
         MainWindow::getInstance()->startUpdating();
+    }
+}
+
+void GLWidget::wheelEvent(QWheelEvent* event)
+{
+    if (event->orientation() == Qt::Horizontal)
+    {
+        scene->slide(event->delta());
+        repaint();
     }
 }

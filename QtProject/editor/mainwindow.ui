@@ -20,6 +20,8 @@ color: rgb(255, 255, 255);
  border: 0px;
 }
 
+/* QMenuBar */
+
 QMenuBar {
 border-bottom: 1px solid #000000;
 background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(160, 160, 160, 255), stop:1 rgba(71, 71, 71, 255));
@@ -32,6 +34,8 @@ QMenuBar::item {
      background: transparent;
      border-radius: 4px;
  }
+
+/* QMenu */
 
 QMenu {
     border: 1px solid rgb(75, 75, 75);
@@ -204,7 +208,7 @@ QTabWidget::tab-bar {
 	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(120, 120, 120, 255), stop:0.158192 rgba(120, 120, 120, 255), stop:0.619586 rgba(80, 80, 80, 255), stop:1 rgba(80, 80, 80, 255));
      border: 1px solid #333333;
      min-width: 8ex;
-     padding: 5px;
+     padding: 3px;
  border-bottom: 0px;
  }
 
@@ -416,7 +420,7 @@ color:rgb(255,255,255);
         <property name="styleSheet">
          <string notr="true"/>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
+        <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
          <property name="spacing">
           <number>0</number>
          </property>
@@ -451,39 +455,6 @@ color:rgb(255,255,255);
            </layout>
           </widget>
          </item>
-         <item>
-          <widget class="QWidget" name="widget" native="true">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border: 0px;
-border-top: 1px solid #000000;</string>
-           </property>
-           <widget class="QSlider" name="horizontalSlider">
-            <property name="geometry">
-             <rect>
-              <x>40</x>
-              <y>10</y>
-              <width>160</width>
-              <height>19</height>
-             </rect>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </widget>
-         </item>
         </layout>
        </widget>
       </item>
@@ -502,7 +473,7 @@ border-top: 1px solid #000000;</string>
      <x>0</x>
      <y>0</y>
      <width>938</width>
-     <height>24</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

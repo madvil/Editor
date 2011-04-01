@@ -17,8 +17,14 @@ Scene::Scene(QWidget *parent) : QObject(parent)
 void Scene::paint(QPainter *painter, QPaintEvent *event)
 {
     int deltaHeight = (event->rect().height() / 6);
+    painter->setRenderHint(QPainter::TextAntialiasing);
     painter->fillRect(event->rect(), background);
     painter->save();
+    painter->translate(-sliding, 0);
+
+    //debug draws
+    painter->restore();
+    painter->setPen(debugPen);
     painter->translate(-sliding, 0);
 
     int start = sliding / 100;
@@ -27,13 +33,11 @@ void Scene::paint(QPainter *painter, QPaintEvent *event)
     {
         painter->drawText(i * 100 + 4, deltaHeight * 5 + 15, QString::number(i));
         painter->drawText(i * 100 + 4, deltaHeight - 6, QString::number(i));
-        painter->drawLine(QPoint(i * 100, deltaHeight), QPoint(i * 100, deltaHeight - 6));
-        painter->drawLine(QPoint(i * 100, deltaHeight * 5), QPoint(i * 100, deltaHeight * 5 + 6));
+        painter->drawLine(QPoint(i * 100, deltaHeight), QPoint(i * 100, deltaHeight - 5));
+        painter->drawLine(QPoint(i * 100, deltaHeight * 5), QPoint(i * 100, deltaHeight * 5 + 5));
     }
 
-    //debug draws
-    painter->restore();
-    painter->setPen(debugPen);
+    painter->translate(sliding, 0);
 
     painter->drawLine(QPoint(0, deltaHeight), QPoint(event->rect().width(), deltaHeight));
     painter->drawLine(QPoint(0, deltaHeight * 5), QPoint(event->rect().width(), deltaHeight * 5));
