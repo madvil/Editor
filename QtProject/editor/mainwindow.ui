@@ -24,7 +24,7 @@ color: rgb(255, 255, 255);
 
 QMenuBar {
 border-bottom: 1px solid #000000;
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(160, 160, 160, 255), stop:1 rgba(71, 71, 71, 255));
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(130, 130, 130, 255), stop:1 rgba(65, 65, 65, 255));
 }
 
 QMenuBar::item {
@@ -473,7 +473,7 @@ color:rgb(255,255,255);
      <x>0</x>
      <y>0</y>
      <width>938</width>
-     <height>26</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

@@ -10,6 +10,7 @@ Scene::Scene(QWidget *parent) : QObject(parent)
     animSliding = 0;
 
     background = QBrush(QColor(100, 130, 200));
+    transparentBlack = QBrush(QColor(0, 0, 0, 80));
     debugPen = QPen(Qt::white);
     debugPen.setWidth(1);
 }
@@ -23,6 +24,13 @@ void Scene::paint(QPainter *painter, QPaintEvent *event)
     //debug draws
     painter->resetMatrix();
     painter->setPen(debugPen);
+
+    painter->fillRect(QRect(0, 0, event->rect().width(), deltaHeight), transparentBlack);
+    painter->fillRect(QRect(0, deltaHeight * 5, event->rect().width(), deltaHeight * 6), transparentBlack);
+
+    painter->drawLine(QPoint(0, deltaHeight), QPoint(event->rect().width(), deltaHeight));
+    painter->drawLine(QPoint(0, deltaHeight * 5), QPoint(event->rect().width(), deltaHeight * 5));
+
     painter->translate(-sliding, 0);
 
     int start = sliding / 100;
@@ -34,11 +42,6 @@ void Scene::paint(QPainter *painter, QPaintEvent *event)
         painter->drawLine(QPoint(i * 100, deltaHeight), QPoint(i * 100, deltaHeight - 5));
         painter->drawLine(QPoint(i * 100, deltaHeight * 5), QPoint(i * 100, deltaHeight * 5 + 5));
     }
-
-    painter->translate(sliding, 0);
-
-    painter->drawLine(QPoint(0, deltaHeight), QPoint(event->rect().width(), deltaHeight));
-    painter->drawLine(QPoint(0, deltaHeight * 5), QPoint(event->rect().width(), deltaHeight * 5));
 
     if (drawDebugInfo)
     {

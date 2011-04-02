@@ -22,6 +22,7 @@ public:
 
 protected:
     QBrush background;
+    QBrush transparentBlack;
     QPen debugPen;
     bool drawDebugInfo;
     int sliding;
