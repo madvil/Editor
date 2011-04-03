@@ -2,9 +2,10 @@
 #include <QHBoxLayout>
 #include "mainwindow.h"
 #include "entity.h"
+#include "editortreewidgetmanager.h"
 #include "ui_mainwindow.h"
 
-MainWindow *singletone = 0;
+static MainWindow *singletone;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowTitle("2D Level Editor");
 
     scene = new Scene(this);
+    EditorTreeWidgetManager(ui->editorTreeWidget);
 
     //init part
     initWidgets();
@@ -23,7 +25,13 @@ MainWindow::MainWindow(QWidget *parent) :
     initTexturesListWidget();
 
     Entity *e = new Entity(propertyBrowser);
-    e->setSelected(true);
+    e->setName("name 1");
+
+    e = new Entity(propertyBrowser);
+    e->setName("name 2");
+
+    e = new Entity(propertyBrowser);
+    e->setName("name 3");
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
@@ -52,6 +60,8 @@ bool MainWindow::eventFilter(QObject *target, QEvent *event)
 
 void MainWindow::initWidgets()
 {
+    ui->editorTreeWidget->setIndentation(15);
+
     glWidget = new GLWidget(this, scene);
     ui->glViewVerticalLayout->addWidget(glWidget);
 
@@ -123,7 +133,11 @@ void MainWindow::on_actionExit_triggered()
     QApplication::exit();
 }
 
-void MainWindow::on_pB_clicked()
+void MainWindow::on_editorTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
 {
-    qDebug() << 11222;
+    EditorTreeWidgetItem *selectedItem = (EditorTreeWidgetItem *)item;
+    if (!selectedItem->isRoot() && EditorTreeWidgetManager::getInstance() != 0)
+    {
+        EditorTreeWidgetManager::getInstance()->select(selectedItem);
+    }
 }

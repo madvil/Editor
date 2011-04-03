@@ -6,6 +6,5 @@ Background::Background(QtAbstractPropertyBrowser *propertyBrowser)
     : BaseObject(propertyBrowser)
 {
     setRootName(BACKGROUND_NAME);
-
-
+    init();
 }

@@ -20,7 +20,7 @@ public:
     QtEnumPropertyManager *getEnumPropertyManager()             const { return enumManager;         }
     QtGroupPropertyManager *getGroupPropertyManager()           const { return groupManager;        }
 
-private:
+protected:
     QtAbstractPropertyBrowser *parent;
 
     QtBoolPropertyManager *boolManager;

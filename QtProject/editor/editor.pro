@@ -26,7 +26,9 @@ SOURCES += main.cpp\
     texturelistitemwidget.cpp \
     glwidget.cpp \
     scene.cpp \
-    background.cpp
+    background.cpp \
+    editortreewidgetitem.cpp \
+    editortreewidgetmanager.cpp
 
 HEADERS  += mainwindow.h \
     test.h \
@@ -45,7 +47,9 @@ HEADERS  += mainwindow.h \
     texturelistitemwidget.h \
     glwidget.h \
     scene.h \
-    background.h
+    background.h \
+    editortreewidgetitem.h \
+    editortreewidgetmanager.h
 
 FORMS    += mainwindow.ui \
     texturelistitemwidget.ui

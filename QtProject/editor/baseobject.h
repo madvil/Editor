@@ -3,6 +3,7 @@
 
 #include <QtCore>
 #include "qtpropertybrowser/qtpropertybrowser.h"
+#include "editortreewidgetitem.h"
 
 class BaseObject : public QObject
 {
@@ -27,6 +28,9 @@ public:
     void setTag(int tag);
     int getTag() const { return tag; }
 
+    void assignEditorTreeWidgetItem(EditorTreeWidgetItem *item) { assignedItem = item; }
+    EditorTreeWidgetItem *getAssignedEditorTreeWidgetItem() { return assignedItem; }
+
     virtual void save(QDataStream *ds) = 0;
     virtual void load(QDataStream *ds) = 0;
 
@@ -35,9 +39,12 @@ protected:
     QtProperty *rootProperty;
     QtProperty *name;
     QMap<QString, QtProperty *> properties;
+    EditorTreeWidgetItem *assignedItem;
 
     bool selected;
     int tag;
+
+    void init();
 };
 
 #endif // BASEOBJECT_H

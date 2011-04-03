@@ -25,7 +25,7 @@ public:
 
     void startUpdating();
 
-private:
+protected:
     Ui::MainWindow *ui;
     QtTreePropertyBrowser *propertyBrowser;
     PropertyManagers *propertyManagers;
@@ -33,21 +33,17 @@ private:
     Scene *scene;
     QTimer *timer;
 
+    bool eventFilter(QObject *target, QEvent *event);
     void initWidgets();
     void initLayouts();
     void initTexturesListWidget();
     TextureListItemWidget *addTextureItem(int page = 1);
 
-protected:
-    bool eventFilter(QObject *target, QEvent *event);
-
 public slots:
     void addNewTexture();
     void animate();
-
-private slots:
     void on_actionExit_triggered();
-    void on_pB_clicked();
+    void on_editorTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
 };
 
 #endif // MAINWINDOW_H

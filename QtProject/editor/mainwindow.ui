@@ -130,7 +130,7 @@ border-top: 1px solid #000000;
 /* TreeWidget */
 
 QTreeView {
- alternate-background-color: rgb(65, 65, 65);
+ alternate-background-color: rgb(75, 75, 75);
  border: 0px solid #000000;
 }
 
@@ -141,11 +141,12 @@ QTreeView {
  }
 
 QTreeView::item:selected:active{
-     background: rgb(65, 65, 65);
+     background: rgb(75, 75, 75);
  }
 
  QTreeView::item:selected:!active {
-     background: rgb(65, 65, 65);
+     background: rgb(75, 75, 75);
+	color:  rgb(255, 255, 255);
  }
 QTreeView::branch {
          background:transparent;
@@ -275,7 +276,7 @@ color:rgb(255,255,255);
        <number>0</number>
       </property>
       <item>
-       <widget class="QTreeWidget" name="objectsTreeWidget">
+       <widget class="QTreeWidget" name="editorTreeWidget">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -328,7 +329,7 @@ color:rgb(255,255,255);
         <string notr="true"/>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab_3">
         <attribute name="title">
@@ -381,19 +382,6 @@ color:rgb(255,255,255);
         <attribute name="title">
          <string>Tab 2</string>
         </attribute>
-        <widget class="QPushButton" name="pB">
-         <property name="geometry">
-          <rect>
-           <x>70</x>
-           <y>70</y>
-           <width>114</width>
-           <height>32</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>PushButton</string>
-         </property>
-        </widget>
        </widget>
       </widget>
      </item>
@@ -486,7 +474,7 @@ color:rgb(255,255,255);
      <x>0</x>
      <y>0</y>
      <width>938</width>
-     <height>26</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

@@ -19,7 +19,7 @@ public:
     void setPage(int page);
     QPushButton *getAddButton();
 
-private:
+protected:
     Ui::TextureListItemWidget *ui;
 
 signals:
