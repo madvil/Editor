@@ -45,6 +45,9 @@ public slots:
     void addNewTexture();
     void animate();
 
+private slots:
+    void on_actionExit_triggered();
+    void on_pB_clicked();
 };
 
 #endif // MAINWINDOW_H

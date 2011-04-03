@@ -117,3 +117,13 @@ void MainWindow::animate()
 
     glWidget->repaint();
 }
+
+void MainWindow::on_actionExit_triggered()
+{
+    QApplication::exit();
+}
+
+void MainWindow::on_pB_clicked()
+{
+    qDebug() << 11222;
+}

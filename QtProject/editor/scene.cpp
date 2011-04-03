@@ -10,7 +10,7 @@ Scene::Scene(QWidget *parent) : QObject(parent)
     animSliding = 0;
 
     background = QBrush(QColor(100, 130, 200));
-    transparentBlack = QBrush(QColor(0, 0, 0, 80));
+    transparentBlack = QBrush(QColor(0, 0, 0, 110));
     debugPen = QPen(Qt::white);
     debugPen.setWidth(1);
 }
