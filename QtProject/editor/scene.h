@@ -1,17 +1,20 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include <QVector>
 #include <QBrush>
 #include <QFont>
 #include <QPen>
-#include <QPainter>
-#include <QPaintEvent>
+#include "background.h"
 
-class Scene : public QObject
+class QPainter;
+class QPaintEvent;
+
+class Scene : public BaseObject
 {
     Q_OBJECT
 public:
-    explicit Scene(QWidget *parent = 0);
+    explicit Scene(QtAbstractPropertyBrowser *propertyBrowser);
     void paint(QPainter *painter, QPaintEvent *event);
     bool animate(); //true whet animate ended
 
@@ -20,8 +23,12 @@ public:
     int getSlide() { return sliding; }
     void animationSlide(int animSliding) { this->animSliding = animSliding; }
 
+    virtual void save(QDataStream *ds) { }
+    virtual void load(QDataStream *ds) { }
+
 protected:
-    QBrush background;
+    Background *background;
+    QVector<BaseObject *> paintObjects;
     QBrush transparentBlack;
     QPen debugPen;
     bool drawDebugInfo;

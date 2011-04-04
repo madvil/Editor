@@ -2,15 +2,22 @@
 #include <QDebug>
 #include "scene.h"
 #include "mainwindow.h"
+#include "constants.h"
 
-Scene::Scene(QWidget *parent) : QObject(parent)
+Scene::Scene(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBrowser)
 {
+    setRootName(CORE_GROUP);
+    setName(SCENE_NAME);
+    init();
+
     drawDebugInfo = true;
     sliding = 0;
     animSliding = 0;
 
-    background = QBrush(QColor(100, 130, 200));
-    transparentBlack = QBrush(QColor(0, 0, 0, 110));
+    background = new Background(propertyBrowser);
+
+    transparentBlack = QBrush(QColor(0, 0, 0, 90));
+    transparentBlack.setStyle(Qt::Dense5Pattern);
     debugPen = QPen(Qt::white);
     debugPen.setWidth(1);
 }
@@ -18,8 +25,14 @@ Scene::Scene(QWidget *parent) : QObject(parent)
 void Scene::paint(QPainter *painter, QPaintEvent *event)
 {
     int deltaHeight = (event->rect().height() / 6);
-    painter->fillRect(event->rect(), background);
+    painter->fillRect(event->rect(), *background->getBgColor());
+    background->paint(painter, event);
     painter->translate(-sliding, 0);
+
+    for (int i = 0; i < paintObjects.size(); i++)
+    {
+        paintObjects.at(i)->paint(painter, event);
+    }
 
     //debug draws
     painter->resetMatrix();

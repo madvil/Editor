@@ -2,6 +2,8 @@
 #define BASEOBJECT_H
 
 #include <QtCore>
+#include <QPainter>
+#include <QPaintEvent>
 #include "qtpropertybrowser/qtpropertybrowser.h"
 #include "editortreewidgetitem.h"
 
@@ -11,6 +13,8 @@ class BaseObject : public QObject
 
 public:
     BaseObject(QtAbstractPropertyBrowser *propertyBrowser);
+
+    virtual void paint(QPainter *painter, QPaintEvent *event) = 0;
 
     void setRootName(QString name);
     QString getRootName() const { return rootProperty->propertyName(); }

@@ -34,6 +34,7 @@ protected:
     QTimer *timer;
 
     bool eventFilter(QObject *target, QEvent *event);
+    void initPropertyBrowser();
     void initWidgets();
     void initLayouts();
     void initTexturesListWidget();
@@ -44,6 +45,8 @@ public slots:
     void animate();
     void on_actionExit_triggered();
     void on_editorTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
+    void propertyChanged(QtProperty *property);
+
 };
 
 #endif // MAINWINDOW_H

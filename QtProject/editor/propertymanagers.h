@@ -1,6 +1,7 @@
 #ifndef PROPERTYMANAGERS_H
 #define PROPERTYMANAGERS_H
 
+#include <QVector>
 #include "qtpropertybrowser/qtpropertymanager.h"
 
 class PropertyManagers
@@ -20,7 +21,11 @@ public:
     QtEnumPropertyManager *getEnumPropertyManager()             const { return enumManager;         }
     QtGroupPropertyManager *getGroupPropertyManager()           const { return groupManager;        }
 
+    int count() { return params.size(); }
+    QtAbstractPropertyManager *getSomePropertyManager(int ind)  const { return params.at(ind);      }
+
 protected:
+    QVector<QtAbstractPropertyManager *> params;
     QtAbstractPropertyBrowser *parent;
 
     QtBoolPropertyManager *boolManager;

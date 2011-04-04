@@ -15,11 +15,13 @@ MainWindow::MainWindow(QWidget *parent) :
     singletone = this;
     setWindowState(Qt::WindowMaximized);
     setWindowTitle("2D Level Editor");
-
-    scene = new Scene(this);
+    glWidget = 0;
     EditorTreeWidgetManager(ui->editorTreeWidget);
 
     //init part
+    initPropertyBrowser();
+    scene = new Scene(propertyBrowser);
+
     initWidgets();
     initLayouts();
     initTexturesListWidget();
@@ -39,8 +41,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    glWidget = 0;
     delete ui;
-    delete propertyBrowser;
+    delete propertyManagers;
 }
 
 MainWindow *MainWindow::getInstance()
@@ -58,18 +61,27 @@ bool MainWindow::eventFilter(QObject *target, QEvent *event)
     return false;
 }
 
+void MainWindow::initPropertyBrowser()
+{
+    propertyBrowser = new QtTreePropertyBrowser();
+    propertyBrowser->setStyleSheet("border: 0px;");
+    propertyBrowser->setIndentation(12);
+    propertyManagers = new PropertyManagers(propertyBrowser);
+    ui->generalTabVerticalLayout->addWidget(propertyBrowser);
+
+    for (int i = 0; i < propertyManagers->count(); i++)
+    {
+        connect(propertyManagers->getSomePropertyManager(i), SIGNAL(propertyChanged(QtProperty*)),
+                        this, SLOT(propertyChanged(QtProperty*)));
+    }
+}
+
 void MainWindow::initWidgets()
 {
     ui->editorTreeWidget->setIndentation(15);
 
     glWidget = new GLWidget(this, scene);
     ui->glViewVerticalLayout->addWidget(glWidget);
-
-    propertyBrowser = new QtTreePropertyBrowser();
-    propertyBrowser->setStyleSheet("border: 0px;");
-    propertyBrowser->setIndentation(12);
-    propertyManagers = new PropertyManagers(propertyBrowser);
-    ui->generalTabVerticalLayout->addWidget(propertyBrowser);
 }
 
 void MainWindow::initLayouts()
@@ -139,5 +151,13 @@ void MainWindow::on_editorTreeWidget_itemClicked(QTreeWidgetItem *item, int colu
     if (!selectedItem->isRoot() && EditorTreeWidgetManager::getInstance() != 0)
     {
         EditorTreeWidgetManager::getInstance()->select(selectedItem);
+    }
+}
+
+void MainWindow::propertyChanged(QtProperty *property)
+{
+    if (glWidget != 0)
+    {
+        glWidget->repaint();
     }
 }

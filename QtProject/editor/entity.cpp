@@ -5,7 +5,7 @@
 Entity::Entity(QtAbstractPropertyBrowser *propertyBrowser)
     : BaseObject(propertyBrowser)
 {
-    setRootName(ENTITY_NAME);
+    setRootName(ENTITY_GROUP);
     init();
 
     for (int i = 1; i < 11; i++)

@@ -18,6 +18,9 @@ PropertyManagers::PropertyManagers(QtAbstractPropertyBrowser *parent)
     enumManager = new QtEnumPropertyManager(this->parent);
     groupManager = new QtGroupPropertyManager(this->parent);
 
+    params << boolManager << intManager << doubleManager << stringManager <<
+                sizeManager << rectManager << sizePolicyManager << enumManager << groupManager;
+
     QtCheckBoxFactory *checkBoxFactory = new QtCheckBoxFactory(this->parent);
     QtSpinBoxFactory *spinBoxFactory = new QtSpinBoxFactory(this->parent);
     QtDoubleSpinBoxFactory *doubleSpinBoxFactory = new QtDoubleSpinBoxFactory(this->parent);
