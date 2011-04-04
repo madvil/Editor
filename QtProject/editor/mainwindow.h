@@ -47,6 +47,9 @@ public slots:
     void on_editorTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
     void propertyChanged(QtProperty *property);
 
+
+private slots:
+    void on_pushButton_clicked();
 };
 
 #endif // MAINWINDOW_H

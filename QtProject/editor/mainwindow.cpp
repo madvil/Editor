@@ -161,3 +161,8 @@ void MainWindow::propertyChanged(QtProperty *property)
         glWidget->repaint();
     }
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+    propertyBrowser->clear();
+}

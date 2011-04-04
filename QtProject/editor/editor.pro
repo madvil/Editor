@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     scene.cpp \
     background.cpp \
     editortreewidgetitem.cpp \
-    editortreewidgetmanager.cpp
+    editortreewidgetmanager.cpp \
+    transformer.cpp
 
 HEADERS  += mainwindow.h \
     test.h \
@@ -49,7 +50,8 @@ HEADERS  += mainwindow.h \
     scene.h \
     background.h \
     editortreewidgetitem.h \
-    editortreewidgetmanager.h
+    editortreewidgetmanager.h \
+    transformer.h
 
 FORMS    += mainwindow.ui \
     texturelistitemwidget.ui

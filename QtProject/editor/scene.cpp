@@ -20,18 +20,28 @@ Scene::Scene(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBr
     transparentBlack.setStyle(Qt::Dense5Pattern);
     debugPen = QPen(Qt::white);
     debugPen.setWidth(1);
+
+    targetDeviceGroup = addNewProperty("Target device", PropertyManagers::getInstance()->getGroupPropertyManager());
+    tdHeight = addNewProperty("Height", PropertyManagers::getInstance()->getIntPropertyManager(), targetDeviceGroup);
+    tdWidth = addNewProperty("Width", PropertyManagers::getInstance()->getIntPropertyManager(), targetDeviceGroup);
+
+    setTDHeight(320);
+    setTDWidth(480);
 }
 
 void Scene::paint(QPainter *painter, QPaintEvent *event)
 {
     int deltaHeight = (event->rect().height() / 6);
+    float heightRatio = (float)(deltaHeight * 4) / (float)getTDHeight();
+
     painter->fillRect(event->rect(), *background->getBgColor());
     background->paint(painter, event);
     painter->translate(-sliding, 0);
 
-    for (int i = 0; i < paintObjects.size(); i++)
+    foreach (BaseObject *obj, paintObjects)
     {
-        paintObjects.at(i)->paint(painter, event);
+        obj->setHeightRatio(heightRatio);
+        obj->paint(painter, event);
     }
 
     //debug draws
@@ -78,4 +88,14 @@ bool Scene::animate()
     }
 
     return false;
+}
+
+void Scene::setTDHeight(int tdHeight)
+{
+    PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->tdHeight, tdHeight);
+}
+
+void Scene::setTDWidth(int tdWidth)
+{
+    PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->tdWidth, tdWidth);
 }

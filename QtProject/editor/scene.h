@@ -20,17 +20,28 @@ public:
 
     void setDrawDebugInfo(bool val) { drawDebugInfo = val; }
     void slide(int slideDelta) { sliding += slideDelta; if (sliding < 0) sliding = 0; }
-    int getSlide() { return sliding; }
+    int getSlide() const { return sliding; }
     void animationSlide(int animSliding) { this->animSliding = animSliding; }
+
+    void setTDHeight(int tdHeight);
+    int getTDHeight() const { return tdHeight->valueText().toInt(); }
+
+    void setTDWidth(int tdWidth);
+    int getTDWidth() const { return tdWidth->valueText().toInt(); }
 
     virtual void save(QDataStream *ds) { }
     virtual void load(QDataStream *ds) { }
 
 protected:
+    QtProperty *targetDeviceGroup;
+    QtProperty *tdHeight;
+    QtProperty *tdWidth;
+
     Background *background;
     QVector<BaseObject *> paintObjects;
     QBrush transparentBlack;
     QPen debugPen;
+
     bool drawDebugInfo;
     int sliding;
     int animSliding;

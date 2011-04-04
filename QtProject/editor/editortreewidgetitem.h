@@ -17,11 +17,11 @@ public:
     QString getName();
     void setName(QString name);
 
-    bool isRoot() { return root; }
+    bool isRoot() const { return root; }
     void setIsRoot(bool val) { root = val; }
 
     void assignObject(BaseObject *object) { assignedObject = object; }
-    BaseObject *getAssignedObject() { return assignedObject; }
+    BaseObject *getAssignedObject() const { return assignedObject; }
 
 protected:
     QString name;

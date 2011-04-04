@@ -23,14 +23,18 @@ public:
     void setBottomBorder(int bottomBorder);
     int getBottomBorder() const { return bottomBorder->valueText().toInt(); }
 
+    void setSliding(int sliding) { this->sliding = sliding; }
+
     virtual void save(QDataStream *ds) { }
     virtual void load(QDataStream *ds) { }
 
 protected:
     QBrush bgColor;
+    QBrush bgTexture;
     QtProperty *topBorder;
     QtProperty *bottomBorder;
     int sliding;
+    bool fixed;
 };
 
 #endif // BACKGROUND_H

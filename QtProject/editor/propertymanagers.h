@@ -8,6 +8,7 @@ class PropertyManagers
 {
 public:
     PropertyManagers(QtAbstractPropertyBrowser *parent);
+    ~PropertyManagers();
 
     static PropertyManagers *getInstance();
 

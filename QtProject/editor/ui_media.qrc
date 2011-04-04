@@ -1,6 +1,9 @@
 <RCC>
-    <qresource prefix="/media">
+    <qresource prefix="/media" lang="/textures">
         <file>media/stylesheet-branch-closed.png</file>
         <file>media/stylesheet-branch-open.png</file>
+    </qresource>
+    <qresource prefix="/textures">
+        <file>media/none.png</file>
     </qresource>
 </RCC>

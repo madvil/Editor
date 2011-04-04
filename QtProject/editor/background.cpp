@@ -1,3 +1,4 @@
+#include <QImage>
 #include "background.h"
 #include "constants.h"
 #include "propertymanagers.h"
@@ -11,15 +12,17 @@ Background::Background(QtAbstractPropertyBrowser *propertyBrowser)
 
     sliding = 0;
     bgColor = QBrush(QColor(100, 130, 200));
+    bgTexture = QBrush(QImage(":/textures/media/none.png"));
 
+    name->setEnabled(false);
     topBorder = addNewProperty("Top border (%)", PropertyManagers::getInstance()->getIntPropertyManager());
-//    bottomBorder = addNewProperty("Bottom border (%)", PropertyManagers::getInstance()->getIntPropertyManager());
+    bottomBorder = addNewProperty("Bottom border (%)", PropertyManagers::getInstance()->getIntPropertyManager());
 
-    PropertyManagers::getInstance()->getIntPropertyManager()->setRange(topBorder, 1, 1000);
-//    PropertyManagers::getInstance()->getIntPropertyManager()->setRange(bottomBorder, 1, 100);
+    PropertyManagers::getInstance()->getIntPropertyManager()->setRange(topBorder, 0, 1000);
+    PropertyManagers::getInstance()->getIntPropertyManager()->setRange(bottomBorder, 0, 1000);
 
     setTopBorder(100);
-//    setBottomBorder(100);
+    setBottomBorder(0);
 }
 
 void Background::paint(QPainter *painter, QPaintEvent *event)
@@ -28,9 +31,10 @@ void Background::paint(QPainter *painter, QPaintEvent *event)
     painter->translate(-sliding, 0);
 
     float p = (float)getTopBorder() / 100.0;
-    int h = (int)(((float)event->rect().height() / 2) * p);
-
-    painter->fillRect(QRect(0, (event->rect().height() / 2) - h, event->rect().width(), h), QBrush(QColor(0, 255, 100, 110)));
+    float p2 = (float)getBottomBorder() / 100.0;
+    int h = (int)(((float)event->rect().height() / 3) * p);
+    int h2 = (int)(((float)event->rect().height() / 2) * p2);
+    painter->fillRect(QRect(0, (event->rect().height() / 2) - h, event->rect().width(), h + h2), bgTexture);
 
     painter->restore();
 }

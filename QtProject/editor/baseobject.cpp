@@ -8,6 +8,7 @@ BaseObject::BaseObject(QtAbstractPropertyBrowser *propertyBrowser)
 {
     tag = 0;
     assignedItem = 0;
+    heightRatio = 1.0;
     this->propertyBrowser = propertyBrowser;
     rootProperty = PropertyManagers::getInstance()->getGroupPropertyManager()->addProperty("root");
     name = addNewProperty("Name", PropertyManagers::getInstance()->getStringPropertyManager());
@@ -62,6 +63,7 @@ void BaseObject::setName(QString name)
 
 void BaseObject::setSelected(bool selected)
 {
+    //bug here in release
     this->selected = selected;
     if (selected)
     {
