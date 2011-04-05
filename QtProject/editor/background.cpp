@@ -3,9 +3,7 @@
 #include "constants.h"
 #include "propertymanagers.h"
 
-Background::Background(QtAbstractPropertyBrowser *propertyBrowser)
-    : BaseObject(propertyBrowser)
-{
+Background::Background(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBrowser) {
     setRootName(CORE_GROUP);
     setName(BACKGROUND_NAME);
     init();
@@ -25,26 +23,23 @@ Background::Background(QtAbstractPropertyBrowser *propertyBrowser)
     setBottomBorder(0);
 }
 
-void Background::paint(QPainter *painter, QPaintEvent *event)
-{
+void Background::paint(QPainter *painter, QPaintEvent *event) {
     painter->save();
     painter->translate(-sliding, 0);
 
     float p = (float)getTopBorder() / 100.0;
     float p2 = (float)getBottomBorder() / 100.0;
     int h = (int)(((float)event->rect().height() / 3) * p);
-    int h2 = (int)(((float)event->rect().height() / 2) * p2);
+    int h2 = (int)(((float)event->rect().height() / 3) * p2);
     painter->fillRect(QRect(0, (event->rect().height() / 2) - h, event->rect().width(), h + h2), bgTexture);
 
     painter->restore();
 }
 
-void Background::setTopBorder(int topBorder)
-{
+void Background::setTopBorder(int topBorder) {
     PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->topBorder, topBorder);
 }
 
-void Background::setBottomBorder(int bottomBorder)
-{
+void Background::setBottomBorder(int bottomBorder) {
     PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->bottomBorder, bottomBorder);
 }

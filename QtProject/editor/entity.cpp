@@ -2,9 +2,7 @@
 #include "constants.h"
 #include "propertymanagers.h"
 
-Entity::Entity(QtAbstractPropertyBrowser *propertyBrowser)
-    : BaseObject(propertyBrowser)
-{
+Entity::Entity(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBrowser) {
     setRootName(ENTITY_GROUP);
     init();
 
@@ -24,42 +22,34 @@ Entity::Entity(QtAbstractPropertyBrowser *propertyBrowser)
     setScaleY(1.0);
 }
 
-void Entity::setPosX(int posX)
-{
+void Entity::setPosX(int posX) {
     PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->posX, posX);
 }
 
-void Entity::setPosY(int posY)
-{
+void Entity::setPosY(int posY) {
     PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->posY, posY);
 }
 
-void Entity::setPosZ(int posZ)
-{
+void Entity::setPosZ(int posZ) {
     PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->posZ, posZ);
 }
 
-void Entity::setScaleX(float scX)
-{
+void Entity::setScaleX(float scX) {
     PropertyManagers::getInstance()->getDoublePropertyManager()->setValue(this->scX, scX);
 }
 
-void Entity::setScaleY(float scY)
-{
+void Entity::setScaleY(float scY) {
     PropertyManagers::getInstance()->getDoublePropertyManager()->setValue(this->scY, scY);
 }
 
-void Entity::setAngle(int angle)
-{
+void Entity::setAngle(int angle) {
     PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->angle, angle);
 }
 
-void Entity::setWidth(int width)
-{
+void Entity::setWidth(int width) {
     PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->width, width);
 }
 
-void Entity::setHeight(int height)
-{
+void Entity::setHeight(int height) {
     PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->height, height);
 }

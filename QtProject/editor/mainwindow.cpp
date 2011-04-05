@@ -7,10 +7,7 @@
 
 static MainWindow *singletone;
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     singletone = this;
     setWindowState(Qt::WindowMaximized);
@@ -39,53 +36,45 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     glWidget = 0;
     delete ui;
     delete propertyManagers;
 }
 
-MainWindow *MainWindow::getInstance()
-{
+MainWindow *MainWindow::getInstance() {
     return singletone;
 }
 
-void MainWindow::startUpdating()
-{
+void MainWindow::startUpdating() {
     timer->start(5);
 }
 
-bool MainWindow::eventFilter(QObject *target, QEvent *event)
-{
+bool MainWindow::eventFilter(QObject *target, QEvent *event) {
     return false;
 }
 
-void MainWindow::initPropertyBrowser()
-{
+void MainWindow::initPropertyBrowser() {
     propertyBrowser = new QtTreePropertyBrowser();
     propertyBrowser->setStyleSheet("border: 0px;");
     propertyBrowser->setIndentation(12);
     propertyManagers = new PropertyManagers(propertyBrowser);
     ui->generalTabVerticalLayout->addWidget(propertyBrowser);
 
-    for (int i = 0; i < propertyManagers->count(); i++)
-    {
+    for (int i = 0; i < propertyManagers->count(); i++) {
         connect(propertyManagers->getSomePropertyManager(i), SIGNAL(propertyChanged(QtProperty*)),
                         this, SLOT(propertyChanged(QtProperty*)));
     }
 }
 
-void MainWindow::initWidgets()
-{
+void MainWindow::initWidgets() {
     ui->editorTreeWidget->setIndentation(15);
 
     glWidget = new GLWidget(this, scene);
     ui->glViewVerticalLayout->addWidget(glWidget);
 }
 
-void MainWindow::initLayouts()
-{
+void MainWindow::initLayouts() {
     QSplitter *splitter1 = new QSplitter(Qt::Vertical);
     splitter1->addWidget(ui->editorTabWidget);
     splitter1->addWidget(ui->bottomPanelWidget);
@@ -109,13 +98,11 @@ void MainWindow::initLayouts()
     centralLayout->addWidget(splitter2);
 }
 
-void MainWindow::initTexturesListWidget()
-{
+void MainWindow::initTexturesListWidget() {
     connect(addTextureItem(0)->getAddButton(), SIGNAL(clicked()), this, SLOT(addNewTexture()));
 }
 
-TextureListItemWidget *MainWindow::addTextureItem(int page)
-{
+TextureListItemWidget *MainWindow::addTextureItem(int page) {
     QListWidgetItem *item = new QListWidgetItem(ui->textureListWidget);
     TextureListItemWidget *textureItem = new TextureListItemWidget();
     textureItem->setPage(page);
@@ -125,44 +112,32 @@ TextureListItemWidget *MainWindow::addTextureItem(int page)
     return textureItem;
 }
 
-void MainWindow::addNewTexture()
-{
+void MainWindow::addNewTexture() {
     addTextureItem();
 }
 
-void MainWindow::animate()
-{
+void MainWindow::animate() {
     if (scene->animate())
-    {
         timer->stop();
-    }
 
     glWidget->repaint();
 }
 
-void MainWindow::on_actionExit_triggered()
-{
+void MainWindow::on_actionExit_triggered() {
     QApplication::exit();
 }
 
-void MainWindow::on_editorTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
-{
+void MainWindow::on_editorTreeWidget_itemClicked(QTreeWidgetItem *item, int column) {
     EditorTreeWidgetItem *selectedItem = (EditorTreeWidgetItem *)item;
     if (!selectedItem->isRoot() && EditorTreeWidgetManager::getInstance() != 0)
-    {
         EditorTreeWidgetManager::getInstance()->select(selectedItem);
-    }
 }
 
-void MainWindow::propertyChanged(QtProperty *property)
-{
+void MainWindow::propertyChanged(QtProperty *property) {
     if (glWidget != 0)
-    {
         glWidget->repaint();
-    }
 }
 
-void MainWindow::on_pushButton_clicked()
-{
+void MainWindow::on_pushButton_clicked() {
     propertyBrowser->clear();
 }
