@@ -3,7 +3,8 @@
 
 static PropertyManagers *singletone = 0;
 
-PropertyManagers::PropertyManagers(QtAbstractPropertyBrowser *parent) {
+PropertyManagers::PropertyManagers(QtAbstractPropertyBrowser *parent)
+{
     singletone = this;
     this->parent = parent;
 
@@ -37,7 +38,8 @@ PropertyManagers::PropertyManagers(QtAbstractPropertyBrowser *parent) {
     this->parent->setFactoryForManager(enumManager, comboBoxFactory);
 }
 
-PropertyManagers::~PropertyManagers() {
+PropertyManagers::~PropertyManagers()
+{
     delete boolManager;
     delete intManager;
     delete doubleManager;
@@ -49,6 +51,7 @@ PropertyManagers::~PropertyManagers() {
     delete groupManager;
 }
 
-PropertyManagers *PropertyManagers::getInstance() {
+PropertyManagers *PropertyManagers::getInstance()
+{
     return singletone;
 }

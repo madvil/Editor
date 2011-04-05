@@ -2,17 +2,20 @@
 
 static EditorTreeWidgetManager *singletone;
 
-EditorTreeWidgetManager::EditorTreeWidgetManager(QTreeWidget *parent) : QObject(parent) {
+EditorTreeWidgetManager::EditorTreeWidgetManager(QTreeWidget *parent) : QObject(parent)
+{
     this->parent = parent;
     singletone = this;
     lastSelected = 0;
 }
 
-EditorTreeWidgetManager *EditorTreeWidgetManager::getInstance() {
+EditorTreeWidgetManager *EditorTreeWidgetManager::getInstance()
+{
     return singletone;
 }
 
-void EditorTreeWidgetManager::addNewObject(BaseObject *object) {
+void EditorTreeWidgetManager::addNewObject(BaseObject *object)
+{
     EditorTreeWidgetItem *parentItem = 0;
     bool resultOk = false;
     for (int i = 0; i < rootItems.size(); i++) {
@@ -36,7 +39,8 @@ void EditorTreeWidgetManager::addNewObject(BaseObject *object) {
     object->assignEditorTreeWidgetItem(newItem);
 }
 
-void EditorTreeWidgetManager::select(EditorTreeWidgetItem *item) {
+void EditorTreeWidgetManager::select(EditorTreeWidgetItem *item)
+{
     if (lastSelected != 0 && lastSelected->getAssignedObject() != 0)
         lastSelected->getAssignedObject()->setSelected(false);
 

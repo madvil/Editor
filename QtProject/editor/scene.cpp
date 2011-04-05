@@ -4,7 +4,8 @@
 #include "mainwindow.h"
 #include "constants.h"
 
-Scene::Scene(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBrowser) {
+Scene::Scene(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBrowser)
+{
     setRootName(CORE_GROUP);
     setName(SCENE_NAME);
     init();
@@ -28,7 +29,8 @@ Scene::Scene(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBr
     setTDWidth(480);
 }
 
-void Scene::paint(QPainter *painter, QPaintEvent *event) {
+void Scene::paint(QPainter *painter, QPaintEvent *event)
+{
     int deltaHeight = (event->rect().height() / 6);
     float heightRatio = (float)(deltaHeight * 4) / (float)getTDHeight();
 
@@ -82,10 +84,12 @@ bool Scene::animate()
     return false;
 }
 
-void Scene::setTDHeight(int tdHeight) {
+void Scene::setTDHeight(int tdHeight)
+{
     PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->tdHeight, tdHeight);
 }
 
-void Scene::setTDWidth(int tdWidth) {
+void Scene::setTDWidth(int tdWidth)
+{
     PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->tdWidth, tdWidth);
 }
