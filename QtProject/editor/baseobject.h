@@ -24,6 +24,7 @@ public:
     QString getPropertyValue(QString propertyName);
 
     void setName(QString name);
+    void updateName();
     QString getName() const { return name->valueText(); }
 
     void setSelected(bool selected);

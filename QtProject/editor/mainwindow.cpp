@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "entity.h"
 #include "editortreewidgetmanager.h"
+#include "texturesmanager.h"t"
 #include "ui_mainwindow.h"
 
 static MainWindow *singletone;
@@ -11,30 +12,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 {
     ui->setupUi(this);
     singletone = this;
-    setWindowState(Qt::WindowMaximized);
+//    setWindowState(Qt::WindowMaximized);
     setWindowTitle("2D Level Editor");
     glWidget = 0;
     EditorTreeWidgetManager(ui->editorTreeWidget);
 
     //init part
+    initTexturesListWidget();
     initPropertyBrowser();
     scene = new Scene(propertyBrowser);
 
     initWidgets();
     initLayouts();
-    initTexturesListWidget();
-
-    Entity *e = new Entity(propertyBrowser);
-    e->setName("name 1");
-
-    e = new Entity(propertyBrowser);
-    e->setName("name 2");
-
-    e = new Entity(propertyBrowser);
-    e->setName("name 3");
+    initEditorToolBar();
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
+    connect(ui->addEntityToolBtn, SIGNAL(clicked()), this, SLOT(on_addEntityToolBtn_clicked1()));
 }
 
 MainWindow::~MainWindow()
@@ -61,7 +55,7 @@ bool MainWindow::eventFilter(QObject *target, QEvent *event)
 
 void MainWindow::initPropertyBrowser()
 {
-    propertyBrowser = new QtTreePropertyBrowser();
+    propertyBrowser = new QtTreePropertyBrowser;
     propertyBrowser->setStyleSheet("border: 0px;");
     propertyBrowser->setIndentation(12);
     propertyManagers = new PropertyManagers(propertyBrowser);
@@ -99,7 +93,7 @@ void MainWindow::initLayouts()
     splitter2->setStretchFactor(0, 0);
     splitter2->setStretchFactor(1, 1);
 
-    QHBoxLayout *centralLayout = new QHBoxLayout();
+    QHBoxLayout *centralLayout = new QHBoxLayout;
     centralLayout->setMargin(2);
     ui->centralWidget->setLayout(centralLayout);
     ui->centralWidget->setFocus();
@@ -108,13 +102,22 @@ void MainWindow::initLayouts()
 
 void MainWindow::initTexturesListWidget()
 {
+    TexturesManager(ui->textureListWidget);
     connect(addTextureItem(0)->getAddButton(), SIGNAL(clicked()), this, SLOT(addNewTexture()));
+}
+
+void MainWindow::initEditorToolBar()
+{
+    editorToolBar = new QToolBar;
+
+    editorToolBar->addWidget(ui->addEntityToolBtn);
+    ui->editorToolBarHorizontalLayout->addWidget(editorToolBar);
 }
 
 TextureListItemWidget *MainWindow::addTextureItem(int page)
 {
     QListWidgetItem *item = new QListWidgetItem(ui->textureListWidget);
-    TextureListItemWidget *textureItem = new TextureListItemWidget();
+    TextureListItemWidget *textureItem = new TextureListItemWidget;
     textureItem->setPage(page);
     item->setSizeHint(QSize(100, 100));
 
@@ -151,9 +154,17 @@ void MainWindow::propertyChanged(QtProperty *property)
 {
     if (glWidget != 0)
         glWidget->repaint();
+
+    EditorTreeWidgetManager::getInstance()->updateNames();
 }
 
 void MainWindow::on_pushButton_clicked()
 {
     propertyBrowser->clear();
+}
+
+void MainWindow::on_addEntityToolBtn_clicked1()
+{
+    scene->addEntity(scene->getSlide() + 100, 100, 50, 50);
+    glWidget->repaint();
 }

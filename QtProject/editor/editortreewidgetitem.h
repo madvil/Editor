@@ -21,7 +21,7 @@ public:
     void setIsRoot(bool val) { root = val; }
 
     void assignObject(BaseObject *object) { assignedObject = object; }
-    BaseObject *getAssignedObject() const { return assignedObject; }
+    BaseObject *getAssignedObject() { return assignedObject; }
 
 protected:
     QString name;

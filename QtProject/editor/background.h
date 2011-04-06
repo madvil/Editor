@@ -23,6 +23,9 @@ public:
     void setBottomBorder(int bottomBorder);
     int getBottomBorder() const { return bottomBorder->valueText().toInt(); }
 
+    void setOpacity(float opacity);
+    float getOpacity() const { return opacity->valueText().toFloat(); }
+
     void setSliding(int sliding) { this->sliding = sliding; }
 
     virtual void save(QDataStream *ds) { }
@@ -33,6 +36,7 @@ protected:
     QBrush bgTexture;
     QtProperty *topBorder;
     QtProperty *bottomBorder;
+    QtProperty *opacity;
     int sliding;
     bool fixed;
 };

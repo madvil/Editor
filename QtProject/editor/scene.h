@@ -5,7 +5,9 @@
 #include <QBrush>
 #include <QFont>
 #include <QPen>
+#include <QPixmap>
 #include "background.h"
+#include "entity.h"
 
 class QPainter;
 class QPaintEvent;
@@ -31,6 +33,10 @@ public:
 
     virtual void save(QDataStream *ds) { }
     virtual void load(QDataStream *ds) { }
+
+    Entity *addEntity(Entity *entity);
+    Entity *addEntity(QPixmap *pixmap);
+    Entity *addEntity(int x, int y, int width, int height);
 
 protected:
     QtProperty *targetDeviceGroup;

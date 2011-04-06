@@ -12,7 +12,7 @@ class Entity : public BaseObject
 public:
     Entity(QtAbstractPropertyBrowser *propertyBrowser);
 
-    void paint(QPainter *painter, QPaintEvent *event) { }
+    void paint(QPainter *painter, QPaintEvent *event);
 
     void setPosX(int posX);
     int getPosX() const { return posX->valueText().toInt(); }

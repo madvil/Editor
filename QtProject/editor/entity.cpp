@@ -4,8 +4,11 @@
 
 Entity::Entity(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBrowser)
 {
+    qDebug() << "Entity" << 1;
     setRootName(ENTITY_GROUP);
+    qDebug() << "Entity" << 2;
     init();
+    qDebug() << "Entity" << 3;
 
     geometryGroup = addNewProperty("Geometry", PropertyManagers::getInstance()->getGroupPropertyManager());
     posX = addNewProperty("X", PropertyManagers::getInstance()->getIntPropertyManager(), geometryGroup);
@@ -18,9 +21,16 @@ Entity::Entity(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(property
     height = addNewProperty("Height", PropertyManagers::getInstance()->getIntPropertyManager(), geometryGroup);
 
     PropertyManagers::getInstance()->getIntPropertyManager()->setRange(angle, 0, 360);
+    PropertyManagers::getInstance()->getDoublePropertyManager()->setSingleStep(scX, 0.1);
+    PropertyManagers::getInstance()->getDoublePropertyManager()->setSingleStep(scY, 0.1);
 
     setScaleX(1.0);
     setScaleY(1.0);
+}
+
+void Entity::paint(QPainter *painter, QPaintEvent *event)
+{
+    painter->drawRect(getPosX(), getPosY(), getWidth(), getHeight());
 }
 
 void Entity::setPosX(int posX)

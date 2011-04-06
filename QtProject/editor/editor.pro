@@ -12,7 +12,7 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    qtpropertybrowser/qtvariantproperty.cpp \
+     qtpropertybrowser/qtvariantproperty.cpp \
     qtpropertybrowser/qttreepropertybrowser.cpp \
     qtpropertybrowser/qtpropertymanager.cpp \
     qtpropertybrowser/qtpropertybrowserutils.cpp \
@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     background.cpp \
     editortreewidgetitem.cpp \
     editortreewidgetmanager.cpp \
-    transformer.cpp
+    transformer.cpp \
+    texturesmanager.cpp
 
 HEADERS  += mainwindow.h \
     test.h \
@@ -51,7 +52,8 @@ HEADERS  += mainwindow.h \
     background.h \
     editortreewidgetitem.h \
     editortreewidgetmanager.h \
-    transformer.h
+    transformer.h \
+    texturesmanager.h
 
 FORMS    += mainwindow.ui \
     texturelistitemwidget.ui

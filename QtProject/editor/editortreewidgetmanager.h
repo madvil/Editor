@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QTreeWidget>
-#include <QVector>
+#include <QList>
 #include "baseobject.h"
 #include "editortreewidgetitem.h"
 
@@ -15,13 +15,13 @@ public:
 
     static EditorTreeWidgetManager *getInstance();
 
+    void updateNames();
     void addNewObject(BaseObject *object);
     void select(EditorTreeWidgetItem *item);
 
 protected:
     QTreeWidget *parent;
     EditorTreeWidgetItem *lastSelected;
-    QVector<EditorTreeWidgetItem *> rootItems;
 
 signals:
 

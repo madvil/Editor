@@ -21,6 +21,7 @@ Scene::Scene(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBr
     debugPen = QPen(Qt::white);
     debugPen.setWidth(1);
 
+    name->setEnabled(false);
     targetDeviceGroup = addNewProperty("Target device", PropertyManagers::getInstance()->getGroupPropertyManager());
     tdHeight = addNewProperty("Height", PropertyManagers::getInstance()->getIntPropertyManager(), targetDeviceGroup);
     tdWidth = addNewProperty("Width", PropertyManagers::getInstance()->getIntPropertyManager(), targetDeviceGroup);
@@ -92,4 +93,30 @@ void Scene::setTDHeight(int tdHeight)
 void Scene::setTDWidth(int tdWidth)
 {
     PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->tdWidth, tdWidth);
+}
+
+Entity *Scene::addEntity(Entity *entity)
+{
+    paintObjects << entity;
+    return entity;
+}
+
+Entity *Scene::addEntity(QPixmap *pixmap)
+{
+
+}
+
+Entity *Scene::addEntity(int x, int y, int width, int height)
+{
+    qDebug() << 1.0 << "q";
+    Entity *e = 0;
+    qDebug() << 1.1 << "q";
+    e = new Entity(propertyBrowser);
+    qDebug() << 1.2 << "q";
+    e->setPosX(x);
+    e->setPosY(y);
+    e->setWidth(width);
+    e->setHeight(height);
+    qDebug() << 1.3;
+    return addEntity(e);
 }

@@ -20,6 +20,22 @@ color: rgb(255, 255, 255);
  border: 0px;
 }
 
+/* QToolButton */
+
+QToolButton {
+border: 1px solid #000000;
+     border-radius: 2px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(90, 90, 90, 255), stop:0.494318 rgba(90, 90, 90, 255), stop:0.5 rgba(71, 71, 71, 255), stop:1 rgba(71, 71, 71, 255));
+     min-width: 23px;
+	 min-height: 23px;
+ }
+
+ QToolButton:pressed {    
+	 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(100, 100, 100, 255), stop:0.494318 rgba(100, 100, 100, 255), stop:0.5 rgba(81, 81, 81, 255), stop:1 rgba(81, 81, 81, 255));
+padding-top: 2px;
+padding-left: 2px;
+ }
+
 /* QMenuBar */
 
 QMenuBar {
@@ -109,6 +125,7 @@ border: 1px solid #000000;
      border-radius: 4px;
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(90, 90, 90, 255), stop:0.494318 rgba(90, 90, 90, 255), stop:0.5 rgba(71, 71, 71, 255), stop:1 rgba(71, 71, 71, 255));
      min-width: 20px;
+	 min-height: 23px;
  }
 
  QPushButton:pressed {    
@@ -329,7 +346,7 @@ color:rgb(255,255,255);
         <string notr="true"/>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab_3">
         <attribute name="title">
@@ -388,7 +405,7 @@ color:rgb(255,255,255);
            <x>170</x>
            <y>70</y>
            <width>75</width>
-           <height>23</height>
+           <height>25</height>
           </rect>
          </property>
          <property name="text">
@@ -405,8 +422,8 @@ color:rgb(255,255,255);
      <rect>
       <x>100</x>
       <y>10</y>
-      <width>421</width>
-      <height>331</height>
+      <width>401</width>
+      <height>301</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -434,13 +451,57 @@ color:rgb(255,255,255);
         <property name="styleSheet">
          <string notr="true"/>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
+        <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
          <property name="spacing">
           <number>0</number>
          </property>
          <property name="margin">
           <number>0</number>
          </property>
+         <item>
+          <widget class="QWidget" name="widget" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>26</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>26</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: none;
+border-bottom: 1px solid #000000;</string>
+           </property>
+           <layout class="QHBoxLayout" name="editorToolBarHorizontalLayout">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>2</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>2</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QToolButton" name="addEntityToolBtn">
+              <property name="text">
+               <string>E</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
          <item>
           <widget class="QWidget" name="editorViewWidget_3" native="true">
            <property name="minimumSize">
