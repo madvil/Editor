@@ -53,7 +53,7 @@ public slots:
     void on_actionExit_triggered();
     void on_editorTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
     void propertyChanged(QtProperty *property);
-    void on_addEntityToolBtn_clicked1();
+    void on_addEntityToolBtn_clicked();
     void on_pushButton_clicked();
 };
 

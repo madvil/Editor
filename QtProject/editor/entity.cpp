@@ -2,13 +2,13 @@
 #include "constants.h"
 #include "propertymanagers.h"
 
+static int ENTITY_COUNTER = 1;
+
 Entity::Entity(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBrowser)
 {
-    qDebug() << "Entity" << 1;
     setRootName(ENTITY_GROUP);
-    qDebug() << "Entity" << 2;
+    setName(tr("Entity ") + QString::number(ENTITY_COUNTER++));
     init();
-    qDebug() << "Entity" << 3;
 
     geometryGroup = addNewProperty("Geometry", PropertyManagers::getInstance()->getGroupPropertyManager());
     posX = addNewProperty("X", PropertyManagers::getInstance()->getIntPropertyManager(), geometryGroup);

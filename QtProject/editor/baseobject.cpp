@@ -17,6 +17,16 @@ BaseObject::BaseObject(QtAbstractPropertyBrowser *propertyBrowser) : QObject(pro
     setName(DEFAULT_NAME);    
 }
 
+BaseObject::~BaseObject()
+{
+//    delete rootProperty;
+//    delete name;
+
+//    for (int i = 0; i < properties.values().count(); i++) {
+//        delete properties.values().at(i);
+//    }
+}
+
 void BaseObject::init()
 {
     if (EditorTreeWidgetManager::getInstance() != 0)
@@ -56,28 +66,17 @@ void BaseObject::setName(QString name)
 
 void BaseObject::updateName()
 {
-//    if (assignedItem != 0)
-//        assignedItem->setName(getName());
+    if (assignedItem != 0)
+        assignedItem->setName(getName());
 }
 
 void BaseObject::setSelected(bool selected)
 {
-    //bug here in release
-    qDebug() << 1;
     if (selected) {
-        qDebug() << 2;
         propertyBrowser->addProperty(rootProperty);
-    } else {
-        qDebug() << 3;
-        if (propertyBrowser != 0) {
-            qDebug() << 3.1;
-            propertyBrowser->removeProperty(rootProperty);
-            qDebug() << 3.2;
-        }
     }
-    qDebug() << 4;
+
     this->selected = selected;
-    qDebug() << 4.1;
 }
 
 void BaseObject::setTag(int tag)

@@ -6,12 +6,13 @@
 #include <QList>
 #include "baseobject.h"
 #include "editortreewidgetitem.h"
+#include "qtpropertybrowser/qtpropertybrowser.h"
 
 class EditorTreeWidgetManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit EditorTreeWidgetManager(QTreeWidget *parent = 0);
+    explicit EditorTreeWidgetManager(QTreeWidget *parent, QtAbstractPropertyBrowser *propertyBrowser);
 
     static EditorTreeWidgetManager *getInstance();
 
@@ -21,6 +22,7 @@ public:
 
 protected:
     QTreeWidget *parent;
+    QtAbstractPropertyBrowser *propertyBrowser;
     EditorTreeWidgetItem *lastSelected;
 
 signals:

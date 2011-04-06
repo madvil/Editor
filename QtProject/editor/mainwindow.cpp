@@ -3,7 +3,7 @@
 #include "mainwindow.h"
 #include "entity.h"
 #include "editortreewidgetmanager.h"
-#include "texturesmanager.h"t"
+#include "texturesmanager.h"
 #include "ui_mainwindow.h"
 
 static MainWindow *singletone;
@@ -15,20 +15,26 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 //    setWindowState(Qt::WindowMaximized);
     setWindowTitle("2D Level Editor");
     glWidget = 0;
-    EditorTreeWidgetManager(ui->editorTreeWidget);
 
     //init part
     initTexturesListWidget();
     initPropertyBrowser();
+
+    EditorTreeWidgetManager(ui->editorTreeWidget, propertyBrowser);
     scene = new Scene(propertyBrowser);
 
     initWidgets();
     initLayouts();
     initEditorToolBar();
 
+    for (int i = 0; i < 1000; i++) {
+        scene->addEntity(i * 58, 90, 50, 50);
+        scene->addEntity(i * 58, 160, 50, 50);
+        scene->addEntity(i * 58, 230, 50, 50);
+    }
+
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
-    connect(ui->addEntityToolBtn, SIGNAL(clicked()), this, SLOT(on_addEntityToolBtn_clicked1()));
 }
 
 MainWindow::~MainWindow()
@@ -146,8 +152,10 @@ void MainWindow::on_actionExit_triggered()
 void MainWindow::on_editorTreeWidget_itemClicked(QTreeWidgetItem *item, int column)
 {
     EditorTreeWidgetItem *selectedItem = (EditorTreeWidgetItem *)item;
-    if (!selectedItem->isRoot() && EditorTreeWidgetManager::getInstance() != 0)
+    if (!selectedItem->isRoot() && EditorTreeWidgetManager::getInstance() != 0) {
+        propertyBrowser->clear();
         EditorTreeWidgetManager::getInstance()->select(selectedItem);
+    }
 }
 
 void MainWindow::propertyChanged(QtProperty *property)
@@ -160,10 +168,10 @@ void MainWindow::propertyChanged(QtProperty *property)
 
 void MainWindow::on_pushButton_clicked()
 {
-    propertyBrowser->clear();
+
 }
 
-void MainWindow::on_addEntityToolBtn_clicked1()
+void MainWindow::on_addEntityToolBtn_clicked()
 {
     scene->addEntity(scene->getSlide() + 100, 100, 50, 50);
     glWidget->repaint();

@@ -13,6 +13,7 @@ class BaseObject : public QObject
 
 public:
     BaseObject(QtAbstractPropertyBrowser *propertyBrowser);
+    ~BaseObject();
 
     virtual void paint(QPainter *painter, QPaintEvent *event) = 0;
 

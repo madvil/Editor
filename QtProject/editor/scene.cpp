@@ -108,15 +108,12 @@ Entity *Scene::addEntity(QPixmap *pixmap)
 
 Entity *Scene::addEntity(int x, int y, int width, int height)
 {
-    qDebug() << 1.0 << "q";
     Entity *e = 0;
-    qDebug() << 1.1 << "q";
     e = new Entity(propertyBrowser);
-    qDebug() << 1.2 << "q";
     e->setPosX(x);
     e->setPosY(y);
     e->setWidth(width);
     e->setHeight(height);
-    qDebug() << 1.3;
+
     return addEntity(e);
 }
