@@ -2,6 +2,7 @@
 
 static EditorTreeWidgetManager *singletone;
 static QList<EditorTreeWidgetItem *> rootItems;
+static bool firstSelect = true;
 
 EditorTreeWidgetManager::EditorTreeWidgetManager(QTreeWidget *parent, QtAbstractPropertyBrowser *propertyBrowser)
     : QObject(parent)
@@ -50,6 +51,10 @@ void EditorTreeWidgetManager::addNewObject(BaseObject *object)
 
 void EditorTreeWidgetManager::select(EditorTreeWidgetItem *item)
 {
+    if (!firstSelect && lastSelected != 0 && lastSelected->getAssignedObject() != 0)
+        lastSelected->getAssignedObject()->setSelected(false);
+
+    firstSelect = false;
     lastSelected = item;
 
     if (lastSelected != 0 && lastSelected->getAssignedObject() != 0)

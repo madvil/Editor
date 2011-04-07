@@ -156,6 +156,7 @@ void MainWindow::on_editorTreeWidget_itemClicked(QTreeWidgetItem *item, int colu
     if (!selectedItem->isRoot() && EditorTreeWidgetManager::getInstance() != 0) {
         propertyBrowser->clear();
         EditorTreeWidgetManager::getInstance()->select(selectedItem);
+        glWidget->repaint();
     }
 }
 

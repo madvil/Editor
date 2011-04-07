@@ -8,6 +8,7 @@
 #include <QPixmap>
 #include "background.h"
 #include "entity.h"
+#include "transformer.h"
 
 class QPainter;
 class QPaintEvent;
@@ -44,7 +45,8 @@ protected:
     QtProperty *tdWidth;
 
     Background *background;
-    QVector<BaseObject *> paintObjects;
+    QVector<Entity *> paintObjects;
+    Transformer *transformer;
     QBrush transparentBlack;
     QPen debugPen;
 

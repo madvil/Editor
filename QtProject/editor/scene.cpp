@@ -16,6 +16,8 @@ Scene::Scene(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBr
 
     background = new Background(propertyBrowser);
 
+    transformer = new Transformer(this);
+
     transparentBlack = QBrush(QColor(0, 0, 0, 90));
     transparentBlack.setStyle(Qt::Dense5Pattern);
     debugPen = QPen(Qt::white);
@@ -39,10 +41,17 @@ void Scene::paint(QPainter *painter, QPaintEvent *event)
     background->paint(painter, event);
     painter->translate(-sliding, 0);
 
-    foreach (BaseObject *obj, paintObjects) {
+    Entity *selectedEntity = 0;
+    transformer->assignTo(0);
+    foreach (Entity *obj, paintObjects) {
         obj->setHeightRatio(heightRatio);
         obj->paint(painter, event);
+        if (obj->isSelected())
+            selectedEntity = obj;
     }
+
+    transformer->assignTo(selectedEntity);
+    transformer->paint(painter, event, sliding);
 
     //debug draws
     painter->resetMatrix();
