@@ -19,12 +19,7 @@ BaseObject::BaseObject(QtAbstractPropertyBrowser *propertyBrowser) : QObject(pro
 
 BaseObject::~BaseObject()
 {
-    delete rootProperty;
-    delete name;
 
-    for (int i = 0; i < properties.values().count(); i++) {
-        delete properties.values().at(i);
-    }
 }
 
 void BaseObject::init()

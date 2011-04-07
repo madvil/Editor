@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     initLayouts();
     initEditorToolBar();
 
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 10; i++) {
         scene->addEntity(i * 58, 90, 50, 50);
         scene->addEntity(i * 58, 160, 50, 50);
         scene->addEntity(i * 58, 230, 50, 50);
@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 MainWindow::~MainWindow()
 {
+    propertyBrowser->clear();
     glWidget = 0;
     delete ui;
     delete propertyManagers;
@@ -61,7 +62,7 @@ bool MainWindow::eventFilter(QObject *target, QEvent *event)
 
 void MainWindow::initPropertyBrowser()
 {
-    propertyBrowser = new QtTreePropertyBrowser;
+    propertyBrowser = new QtTreePropertyBrowser(this);
     propertyBrowser->setStyleSheet("border: 0px;");
     propertyBrowser->setIndentation(12);
     propertyManagers = new PropertyManagers(propertyBrowser);

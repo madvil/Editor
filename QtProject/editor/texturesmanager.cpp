@@ -6,7 +6,6 @@ TexturesManager::TexturesManager(QListWidget *parent) : QObject(parent)
 {
     singletone = this;
     this->parent = parent;
-    qDebug() << 222;
     none = QPixmap(":/textures/media/none.png");
 }
 
