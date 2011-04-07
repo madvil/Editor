@@ -6,6 +6,7 @@ GLWidget::GLWidget(QWidget *parent, Scene *scene) : QGLWidget(QGLFormat(QGL::Sam
 {
     setAutoFillBackground(false);
     this->scene = scene;
+    toSliding = false;
 }
 
 void GLWidget::paintEvent(QPaintEvent *event)
@@ -22,12 +23,18 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 {
     lastX = event->x();
     lastXDelta = 0;
+
+    if (event->button() == Qt::RightButton) {
+        toSliding = true;
+    }
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    scene->slide(lastXDelta = lastX - event->x());
-    lastX = event->x();
+    if (toSliding) {
+        scene->slide(lastXDelta = lastX - event->x());
+        lastX = event->x();
+    }
 
     repaint();
 }
@@ -38,6 +45,8 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event)
         scene->animationSlide(lastXDelta);
         MainWindow::getInstance()->startUpdating();
     }
+
+    toSliding = false;
 }
 
 void GLWidget::wheelEvent(QWheelEvent* event)

@@ -19,6 +19,7 @@ protected:
     Scene *scene;
     int lastX;
     int lastXDelta;
+    bool toSliding;
 
     void paintEvent(QPaintEvent *event);
     void mousePressEvent(QMouseEvent *event);
