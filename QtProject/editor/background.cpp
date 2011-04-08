@@ -32,7 +32,7 @@ Background::Background(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(
 
     setTopBorder(100);
     setBottomBorder(0);
-    setOpacity(0.5);
+    setOpacity(0.25);
 }
 
 void Background::paint(QPainter *painter, QPaintEvent *event)

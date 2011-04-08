@@ -13,11 +13,10 @@ Scene::Scene(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBr
     drawDebugInfo = true;
     sliding = 0;
     animSliding = 0;
+    translatingEntity = 0;
 
     background = new Background(propertyBrowser);
-
     transformer = new Transformer(this);
-
     transparentBlack = QBrush(QColor(0, 0, 0, 90));
     transparentBlack.setStyle(Qt::Dense5Pattern);
     debugPen = QPen(Qt::white);
@@ -27,15 +26,16 @@ Scene::Scene(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBr
     targetDeviceGroup = addNewProperty("Target device", PropertyManagers::getInstance()->getGroupPropertyManager());
     tdHeight = addNewProperty("Height", PropertyManagers::getInstance()->getIntPropertyManager(), targetDeviceGroup);
     tdWidth = addNewProperty("Width", PropertyManagers::getInstance()->getIntPropertyManager(), targetDeviceGroup);
+    worldHeight = addNewProperty("World height", PropertyManagers::getInstance()->getIntPropertyManager());
 
     setTDHeight(320);
     setTDWidth(480);
+    setWorldHeight(1000);
 }
 
-void Scene::paint(QPainter *painter, QPaintEvent *event)
+void Scene::paint(QPainter *painter, QPaintEvent *event, GLWidget *glWidget)
 {
     int deltaHeight = (event->rect().height() / 6);
-    float heightRatio = (float)(deltaHeight * 4) / (float)getTDHeight();
 
     painter->fillRect(event->rect(), *background->getBgColor());
     background->paint(painter, event);
@@ -44,14 +44,10 @@ void Scene::paint(QPainter *painter, QPaintEvent *event)
     Entity *selectedEntity = 0;
     transformer->assignTo(0);
     foreach (Entity *obj, paintObjects) {
-        obj->setHeightRatio(heightRatio);
-        obj->paint(painter, event);
+        obj->paint(painter, event, this);
         if (obj->isSelected())
             selectedEntity = obj;
     }
-
-    transformer->assignTo(selectedEntity);
-    transformer->paint(painter, event, sliding);
 
     //debug draws
     painter->resetMatrix();
@@ -60,22 +56,33 @@ void Scene::paint(QPainter *painter, QPaintEvent *event)
     painter->fillRect(QRect(0, 0, event->rect().width(), deltaHeight), transparentBlack);
     painter->fillRect(QRect(0, deltaHeight * 5, event->rect().width(), deltaHeight * 6), transparentBlack);
 
+    painter->setOpacity(0.6);
+
     painter->drawLine(QPoint(0, deltaHeight), QPoint(event->rect().width(), deltaHeight));
     painter->drawLine(QPoint(0, deltaHeight * 5), QPoint(event->rect().width(), deltaHeight * 5));
 
+    painter->setOpacity(1.0);
     painter->translate(-sliding, 0);
 
-    int start = sliding / 100;
-    int count = start + event->rect().width() / 100 + 2;
-    for (int i = start; i < count; i++) {
-        painter->drawText(i * 100 + 4, deltaHeight * 5 + 15, QString::number(i));
-        painter->drawText(i * 100 + 4, deltaHeight - 6, QString::number(i));
-        painter->drawLine(QPoint(i * 100, deltaHeight), QPoint(i * 100, deltaHeight - 5));
-        painter->drawLine(QPoint(i * 100, deltaHeight * 5), QPoint(i * 100, deltaHeight * 5 + 5));
+    transformer->assignTo(selectedEntity);
+    transformer->paint(painter, event);
+
+    float r = getRatio(event->rect().height());
+    int h = getWorldHeight();
+    int d = 100;
+    if (h > 799) {
+        d = 1000;
+    } else if (h > 7999) {
+        d = 10000;
     }
 
-    if (drawDebugInfo) {
-
+    int start = (sliding / r) / (float)d;
+    int count = start + (event->rect().width() / r) / (float)d + 2;
+    for (int i = start; i < count; i++) {
+        painter->drawText((i * d) * r + 4, deltaHeight * 5 + 15, QString::number(i));
+        painter->drawText((i * d) * r + 4, deltaHeight - 6, QString::number(i));
+        painter->drawLine(QPoint((i * d) * r, deltaHeight), QPoint((i * d) * r, deltaHeight - 5));
+        painter->drawLine(QPoint((i * d) * r, deltaHeight * 5), QPoint((i * d) * r, deltaHeight * 5 + 5));
     }
 }
 
@@ -104,6 +111,35 @@ void Scene::setTDWidth(int tdWidth)
     PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->tdWidth, tdWidth);
 }
 
+void Scene::setWorldHeight(int worldHeight)
+{
+    PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->worldHeight, worldHeight);
+}
+
+int Scene::convertWindowCoordToWorld(int w_y, int height)
+{
+    int deltaHeight = (height / 6);
+    float y = w_y - deltaHeight;
+    y /= getRatio(height);
+
+    return (int)y;
+}
+
+int Scene::convertWorldCoordToWindow(int y, int height)
+{
+    int deltaHeight = (height / 6);
+    float _y = y * getRatio(height);
+    _y += deltaHeight;
+
+    return _y;
+}
+
+float Scene::getRatio(int height)
+{
+    int deltaHeight = (height / 6);
+    return ((float)deltaHeight * 4.0) / (float)getWorldHeight();
+}
+
 Entity *Scene::addEntity(Entity *entity)
 {
     paintObjects << entity;
@@ -125,4 +161,80 @@ Entity *Scene::addEntity(int x, int y, int width, int height)
     e->setHeight(height);
 
     return addEntity(e);
+}
+
+Entity *Scene::getEntity(int w_x, int w_y, int height)
+{
+    Entity *e = 0;
+    float r = getRatio(height);
+    int x = (float)(w_x + sliding) / r;
+    int y = convertWindowCoordToWorld(w_y, height);
+
+    for (int i = paintObjects.count() - 1; i > -1; i--) {
+        Entity *obj = paintObjects.at(i);
+        obj->setCheckedCorner(false);
+        int _x = obj->getPosX();
+        int _y = obj->getPosY();
+
+        if (x >= _x && x < _x + obj->getWidth()) {
+            if (y >= _y && y < _y + obj->getHeight()) {
+                e = obj;
+                e->checkCorner(w_x, w_y, height, this);
+                break;
+            }
+        }
+    }
+
+    return e;
+}
+
+Entity *Scene::select(int w_x, int w_y, int height)
+{
+    Entity *e = getEntity(w_x, w_y, height);
+    if (e != 0)
+        e->select();
+
+    return e;
+}
+
+void Scene::startModifyEntity(Entity *e)
+{
+    translatingEntity = e;
+    translateX = 0;
+    translateY = 0;
+    if (e != 0) {
+        startPosX = e->getPosX();
+        startPosY = e->getPosY();
+        startWidth = e->getWidth();
+        startHeight = e->getHeight();
+    }
+}
+
+void Scene::translateEntity(int dX, int dY, int height)
+{
+    if (translatingEntity != 0) {
+        translateX += dX;
+        translateY += dY;
+        translatingEntity->setPosX(startPosX - (float)translateX / getRatio(height));
+        translatingEntity->setPosY(startPosY - (float)translateY / getRatio(height));
+    }
+}
+
+void Scene::transformEntity(int dX, int dY, int height)
+{
+    if (translatingEntity != 0) {
+        translateX += dX;
+        translateY += dY;
+        translatingEntity->setWidth(startWidth - (float)translateX / getRatio(height));
+        translatingEntity->setHeight(startHeight - (float)translateY / getRatio(height));
+    }
+}
+
+void Scene::endModifyEntity()
+{
+    translateX = translateY = startPosX = startPosY = startWidth = startHeight = 0;
+    if (translatingEntity != 0) {
+        translatingEntity->setCheckedCorner(false);
+        translatingEntity = 0;
+    }
 }

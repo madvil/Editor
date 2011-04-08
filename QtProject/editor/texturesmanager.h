@@ -15,11 +15,11 @@ public:
 
     static TexturesManager *getInstance();
 
-    QPixmap getNone() { qDebug() << 12331; return none; }
+    QPixmap *getNone();
 
 protected:
     QListWidget *parent;
-    QPixmap none;
+
 };
 
 #endif // TEXTURESMANAGER_H

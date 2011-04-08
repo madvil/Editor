@@ -28,9 +28,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     initEditorToolBar();
 
     for (int i = 0; i < 10; i++) {
-        scene->addEntity(i * 58, 90, 50, 50);
-        scene->addEntity(i * 58, 160, 50, 50);
-        scene->addEntity(i * 58, 230, 50, 50);
+        scene->addEntity(i * 250, 50, 200, 200);
+        scene->addEntity(i * 250, 300, 200, 200);
+        scene->addEntity(i * 250, 550, 200, 200);
     }
 
     timer = new QTimer(this);
@@ -147,6 +147,8 @@ void MainWindow::animate()
 
 void MainWindow::on_actionExit_triggered()
 {
+//    propertyBrowser->clear();
+//    EditorTreeWidgetManager::getInstance()->deselect();
     QApplication::exit();
 }
 
@@ -170,7 +172,7 @@ void MainWindow::propertyChanged(QtProperty *property)
 
 void MainWindow::on_pushButton_clicked()
 {
-
+    propertyBrowser->clear();
 }
 
 void MainWindow::on_addEntityToolBtn_clicked()

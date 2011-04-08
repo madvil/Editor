@@ -7,7 +7,6 @@ BaseObject::BaseObject(QtAbstractPropertyBrowser *propertyBrowser) : QObject(pro
 {
     tag = 0;
     assignedItem = 0;
-    heightRatio = 1.0;
     selected = false;
     this->propertyBrowser = propertyBrowser;
     rootProperty = PropertyManagers::getInstance()->getGroupPropertyManager()->addProperty("root");
@@ -69,6 +68,8 @@ void BaseObject::setSelected(bool selected)
 {
     if (selected) {
         propertyBrowser->addProperty(rootProperty);
+    } else {
+        propertyBrowser->removeProperty(rootProperty);
     }
 
     this->selected = selected;
@@ -77,4 +78,10 @@ void BaseObject::setSelected(bool selected)
 void BaseObject::setTag(int tag)
 {
     this->tag = tag;
+}
+
+void BaseObject::select()
+{
+    propertyBrowser->clear();
+    EditorTreeWidgetManager::getInstance()->select(assignedItem);
 }

@@ -7,17 +7,21 @@
 #include <QPen>
 #include "entity.h"
 
+class Scene;
+
 class Transformer : public QObject
 {
     Q_OBJECT
 public:
-    explicit Transformer(QObject *parent = 0);
-    void paint(QPainter *painter, QPaintEvent *event, int sliding);
+    explicit Transformer(QObject *parent);
+    void paint(QPainter *painter, QPaintEvent *event);
     void assignTo(Entity *entity);
 
 protected:
+    Scene *scene;
     Entity *assignedEntity;
     QPen redPen;
+    QPen whitePen;
 
 signals:
 

@@ -5,6 +5,7 @@
 
 class QPainter;
 class QPaintEvent;
+class Scene;
 
 class Entity : public BaseObject
 {
@@ -12,7 +13,10 @@ class Entity : public BaseObject
 public:
     Entity(QtAbstractPropertyBrowser *propertyBrowser);
 
-    void paint(QPainter *painter, QPaintEvent *event);
+    void paint(QPainter *painter, QPaintEvent *event) {}
+    void paint(QPainter *painter, QPaintEvent *event, Scene *scene);
+
+    void translate(int dX, int dY);
 
     void setPosX(int posX);
     int getPosX() const { return posX->valueText().toInt(); }
@@ -38,6 +42,12 @@ public:
     void setHeight(int height);
     int getHeight() const { return height->valueText().toInt(); }
 
+    void setDrawRect(bool drawRect) { this->drawRect = drawRect; }
+
+    void setCheckedCorner(bool checkedCorner) { this->checkedCorner = checkedCorner; }
+    bool isCheckedCorner() const { return checkedCorner; }
+    bool checkCorner(int w_x, int w_y, int height, Scene *scene);
+
     virtual void save(QDataStream *ds) { }
     virtual void load(QDataStream *ds) { }
 
@@ -51,6 +61,9 @@ protected:
     QtProperty *angle;
     QtProperty *width;
     QtProperty *height;
+
+    bool checkedCorner;
+    bool drawRect;
 };
 
 #endif // ENTITY_H

@@ -37,7 +37,7 @@ public:
     void assignEditorTreeWidgetItem(EditorTreeWidgetItem *item) { assignedItem = item; }
     EditorTreeWidgetItem *getAssignedEditorTreeWidgetItem() const { return assignedItem; }
 
-    void setHeightRatio(float heightRatio) { this->heightRatio = heightRatio; }
+    void select();
 
     virtual void save(QDataStream *ds) = 0;
     virtual void load(QDataStream *ds) = 0;
@@ -51,7 +51,6 @@ protected:
 
     bool selected;
     int tag;
-    float heightRatio;
 
     void init();
 };

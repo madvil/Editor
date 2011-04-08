@@ -51,12 +51,16 @@ void EditorTreeWidgetManager::addNewObject(BaseObject *object)
 
 void EditorTreeWidgetManager::select(EditorTreeWidgetItem *item)
 {
-    if (!firstSelect && lastSelected != 0 && lastSelected->getAssignedObject() != 0)
-        lastSelected->getAssignedObject()->setSelected(false);
-
+    deselect();
     firstSelect = false;
     lastSelected = item;
 
     if (lastSelected != 0 && lastSelected->getAssignedObject() != 0)
         lastSelected->getAssignedObject()->setSelected(true);
+}
+
+void EditorTreeWidgetManager::deselect()
+{
+    if (!firstSelect && lastSelected != 0 && lastSelected->getAssignedObject() != 0)
+        lastSelected->getAssignedObject()->setSelected(false);
 }

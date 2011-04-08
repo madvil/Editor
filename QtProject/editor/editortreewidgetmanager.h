@@ -19,6 +19,9 @@ public:
     void updateNames();
     void addNewObject(BaseObject *object);
     void select(EditorTreeWidgetItem *item);
+    void deselect();
+
+    EditorTreeWidgetItem *getSelected() const { return lastSelected; }
 
 protected:
     QTreeWidget *parent;

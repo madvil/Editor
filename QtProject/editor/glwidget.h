@@ -18,8 +18,12 @@ public:
 protected:
     Scene *scene;
     int lastX;
+    int lastY;
     int lastXDelta;
+    int lastYDelta;
     bool toSliding;
+    bool toTranslate;
+    bool toTransform;
 
     void paintEvent(QPaintEvent *event);
     void mousePressEvent(QMouseEvent *event);
