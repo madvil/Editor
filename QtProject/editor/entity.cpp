@@ -14,6 +14,7 @@ Entity::Entity(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(property
 
     checkedCorner = false;
     drawRect = false;
+    pixmap = 0;
 
     geometryGroup = addNewProperty("Geometry", PropertyManagers::getInstance()->getGroupPropertyManager());
     posX = addNewProperty("X", PropertyManagers::getInstance()->getIntPropertyManager(), geometryGroup);
@@ -37,17 +38,17 @@ Entity::Entity(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(property
 
 void Entity::paint(QPainter *painter, QPaintEvent *event, Scene *scene)
 {
-    int _h = event->rect().height();
-    float ratio = scene->getRatio(_h);
+    float ratio = scene->getRatio();
     int x = getPosX() * ratio;
-    int y = scene->convertWorldCoordToWindow(getPosY(), _h);
+    int y = scene->convertWorldCoordToWindow(getPosY());
     int w = getWidth() * ratio;
     int h = getHeight() * ratio;
+    if (pixmap == 0)
+        pixmap = TexturesManager::getInstance()->getNone();
 
     if (!((x - scene->getSlide() < 0 || x - scene->getSlide() > event->rect().width()) &&
                        (x + w - scene->getSlide() < 0 || x + w - scene->getSlide() > event->rect().width()))) {
-
-        painter->drawPixmap(x, y, w, h, *TexturesManager::getInstance()->getNone());
+        painter->drawPixmap(x, y, w, h, *pixmap);
 
         if (!selected && drawRect)
             painter->drawRect(x, y, w, h);
@@ -100,11 +101,11 @@ void Entity::setHeight(int height)
     PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->height, height);
 }
 
-bool Entity::checkCorner(int w_x, int w_y, int height, Scene *scene)
+bool Entity::checkCorner(int w_x, int w_y, Scene *scene)
 {
     checkedCorner = false;
-    int x_ = (getPosX() + getWidth()) * scene->getRatio(height) - scene->getSlide();
-    int y_ = scene->convertWorldCoordToWindow(getPosY() + getHeight(), height);
+    int x_ = (getPosX() + getWidth()) * scene->getRatio() - scene->getSlide();
+    int y_ = scene->convertWorldCoordToWindow(getPosY() + getHeight());
     if (w_x >= x_ - 10 && w_x <= x_) {
         if (w_y >= y_ - 10 && w_y <= y_)
             checkedCorner = true;

@@ -12,12 +12,11 @@ Transformer::Transformer(QObject *parent) : QObject(parent)
 void Transformer::paint(QPainter *painter, QPaintEvent *event)
 {
     if (assignedEntity != 0) {
-        int _h = event->rect().height();
         painter->save();
 
-        float r = scene->getRatio(_h);
+        float r = scene->getRatio();
         int x = assignedEntity->getPosX() * r;
-        int y = scene->convertWorldCoordToWindow(assignedEntity->getPosY(), _h);
+        int y = scene->convertWorldCoordToWindow(assignedEntity->getPosY());
         int w = assignedEntity->getWidth() * r;
         int h = assignedEntity->getHeight() * r;
 

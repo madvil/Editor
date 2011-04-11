@@ -64,3 +64,8 @@ void EditorTreeWidgetManager::deselect()
     if (!firstSelect && lastSelected != 0 && lastSelected->getAssignedObject() != 0)
         lastSelected->getAssignedObject()->setSelected(false);
 }
+
+void EditorTreeWidgetManager::reset()
+{
+    lastSelected = 0;
+}

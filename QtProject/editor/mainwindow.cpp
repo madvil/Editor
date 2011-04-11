@@ -27,12 +27,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     initLayouts();
     initEditorToolBar();
 
-    for (int i = 0; i < 10; i++) {
-        scene->addEntity(i * 250, 50, 200, 200);
-        scene->addEntity(i * 250, 300, 200, 200);
-        scene->addEntity(i * 250, 550, 200, 200);
-    }
-
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
 }
@@ -147,8 +141,6 @@ void MainWindow::animate()
 
 void MainWindow::on_actionExit_triggered()
 {
-//    propertyBrowser->clear();
-//    EditorTreeWidgetManager::getInstance()->deselect();
     QApplication::exit();
 }
 
@@ -177,6 +169,6 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_addEntityToolBtn_clicked()
 {
-    scene->addEntity(scene->getSlide() + 100, 100, 50, 50);
+    scene->addEntity(TexturesManager::getInstance()->getNone())->select();
     glWidget->repaint();
 }

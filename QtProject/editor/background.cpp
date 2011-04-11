@@ -1,4 +1,3 @@
-#include <QImage>
 #include "background.h"
 #include "constants.h"
 #include "propertymanagers.h"
@@ -12,13 +11,7 @@ Background::Background(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(
 
     sliding = 0;
     bgColor = QBrush(QColor(100, 130, 200));
-    bgTexture = QBrush(QImage(":/textures/media/none.png"));
-   // qDebug() << 111 << TexturesManager::getInstance()->getNone().width();
- //   QPixmap pm(TexturesManager::getInstance()->getNone());
-   // qDebug() << pm.width();
-//    bgTexture = QBrush(QPixmap::fromImage(TexturesManager::getInstance()->getNone()));
-
-//    bgTexture = QBrush(TexturesManager::getInstance()->getNone());
+    bgTexture = QBrush(QColor(0, 0, 0));
 
     name->setEnabled(false);
     topBorder = addNewProperty("Top border (%)", PropertyManagers::getInstance()->getIntPropertyManager());
@@ -31,8 +24,8 @@ Background::Background(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(
     PropertyManagers::getInstance()->getDoublePropertyManager()->setSingleStep(opacity, 0.1);
 
     setTopBorder(100);
-    setBottomBorder(0);
-    setOpacity(0.25);
+    setBottomBorder(100);
+    setOpacity(0);
 }
 
 void Background::paint(QPainter *painter, QPaintEvent *event)

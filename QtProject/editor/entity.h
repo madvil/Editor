@@ -46,7 +46,10 @@ public:
 
     void setCheckedCorner(bool checkedCorner) { this->checkedCorner = checkedCorner; }
     bool isCheckedCorner() const { return checkedCorner; }
-    bool checkCorner(int w_x, int w_y, int height, Scene *scene);
+    bool checkCorner(int w_x, int w_y, Scene *scene);
+
+    void setPixmap(QPixmap *pixmap) { this->pixmap = pixmap; }
+    QPixmap *getPixmap() { return pixmap; }
 
     virtual void save(QDataStream *ds) { }
     virtual void load(QDataStream *ds) { }
@@ -62,6 +65,7 @@ protected:
     QtProperty *width;
     QtProperty *height;
 
+    QPixmap *pixmap;
     bool checkedCorner;
     bool drawRect;
 };

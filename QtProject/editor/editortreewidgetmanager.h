@@ -20,6 +20,7 @@ public:
     void addNewObject(BaseObject *object);
     void select(EditorTreeWidgetItem *item);
     void deselect();
+    void reset();
 
     EditorTreeWidgetItem *getSelected() const { return lastSelected; }
 

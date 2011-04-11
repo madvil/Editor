@@ -7,6 +7,7 @@
 #include <QPen>
 #include <QPixmap>
 #include "background.h"
+#include "firstplan.h"
 #include "entity.h"
 #include "transformer.h"
 
@@ -40,20 +41,20 @@ public:
     virtual void save(QDataStream *ds) { }
     virtual void load(QDataStream *ds) { }
 
-    int convertWindowCoordToWorld(int w_y, int height);
-    int convertWorldCoordToWindow(int y, int height);
-    float getRatio(int height);
+    int convertWindowCoordToWorld(int w_y);
+    int convertWorldCoordToWindow(int y);
+    float getRatio();
 
     Entity *addEntity(Entity *entity);
     Entity *addEntity(QPixmap *pixmap);
     Entity *addEntity(int x, int y, int width, int height);
 
-    Entity *getEntity(int w_x, int w_y, int height);
-    Entity *select(int w_x, int w_y, int height);
+    Entity *getEntity(int w_x, int w_y);
+    Entity *select(int w_x, int w_y);
 
     void startModifyEntity(Entity *e);
-    void translateEntity(int dX, int dY, int height);
-    void transformEntity(int dX, int dY, int height);
+    void translateEntity(int dX, int dY);
+    void transformEntity(int dX, int dY);
     void endModifyEntity();
 
 protected:
@@ -63,6 +64,7 @@ protected:
     QtProperty *worldHeight;
 
     Background *background;
+    Firstplan *firstplan;
     QVector<Entity *> paintObjects;
     Transformer *transformer;
     QBrush transparentBlack;
@@ -75,6 +77,7 @@ protected:
     int startPosY;
     int startWidth;
     int startHeight;
+    int lastHeight;
 
     bool drawDebugInfo;
     int sliding;

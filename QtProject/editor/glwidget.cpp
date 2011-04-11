@@ -34,7 +34,7 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
         toSliding = true;
         scene->animationSlide(0);
     } else if (event->button() == Qt::LeftButton) {
-        if (lastEntity != 0 && lastEntity->checkCorner(event->x(), event->y(), height(), scene)) {
+        if (lastEntity != 0 && lastEntity->checkCorner(event->x(), event->y(), scene)) {
             scene->startModifyEntity(lastEntity);
             toTransform = true;
             return;
@@ -42,7 +42,7 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 
         lastEntity = 0;
         EditorTreeWidgetManager::getInstance()->deselect();
-        Entity *e = scene->getEntity(event->x(), event->y(), height());
+        Entity *e = scene->getEntity(event->x(), event->y());
         EditorTreeWidgetItem *etwi = EditorTreeWidgetManager::getInstance()->getSelected();
         if (etwi != 0 && e != 0) {
             lastEntity = e;
@@ -70,9 +70,9 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     if (toSliding) {
         scene->slide(lastXDelta);
     } else if (toTransform) {
-        scene->transformEntity(lastXDelta, lastYDelta, height());
+        scene->transformEntity(lastXDelta, lastYDelta);
     } else if (toTranslate) {
-        scene->translateEntity(lastXDelta, lastYDelta, height());
+        scene->translateEntity(lastXDelta, lastYDelta);
     }
 
     repaint();
