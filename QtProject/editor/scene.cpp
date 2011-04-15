@@ -156,6 +156,10 @@ Entity *Scene::addEntity(Entity *entity)
 
 Entity *Scene::addEntity(QPixmap *pixmap)
 {
+    if (pixmap == 0) {
+        return 0;
+    }
+
     float d = (float)getWorldHeight() / (float)getTDHeight();
     int w = pixmap->width() * d;
     int h = pixmap->height() * d;
@@ -167,8 +171,7 @@ Entity *Scene::addEntity(QPixmap *pixmap)
 
 Entity *Scene::addEntity(int x, int y, int width, int height)
 {
-    Entity *e = 0;
-    e = new Entity(propertyBrowser);
+    Entity *e = new Entity(propertyBrowser);
     e->setPosX(x);
     e->setPosY(y);
     e->setWidth(width);

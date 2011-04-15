@@ -55,7 +55,8 @@ HEADERS  += mainwindow.h \
     editortreewidgetmanager.h \
     transformer.h \
     texturesmanager.h \
-    firstplan.h
+    firstplan.h \
+    simpletexture.h
 
 FORMS    += mainwindow.ui \
     texturelistitemwidget.ui

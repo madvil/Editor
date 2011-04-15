@@ -2,6 +2,7 @@
 
 static TexturesManager *singletone = 0;
 static QPixmap *none = 0;
+static QVector<SimpleTexture *> textures;
 
 TexturesManager::TexturesManager(QListWidget *parent) : QObject(parent)
 {
@@ -25,4 +26,33 @@ QPixmap *TexturesManager::getNone()
         none = new QPixmap(":/textures/media/none.png");
 
     return none;
+}
+
+void TexturesManager::addTexture(QString path)
+{
+    SimpleTexture *st = new SimpleTexture;
+    st->path = path;
+
+    textures << st;
+}
+
+QPixmap *TexturesManager::getTexture(QString path)
+{
+    SimpleTexture *st = 0;
+    foreach (SimpleTexture *st1, textures) {
+        if (st1->path.compare(path) == 0) {
+            st = st1;
+            break;
+        }
+    }
+
+    if (st != 0) {
+        if (st->pixmap == 0) {
+            st->pixmap = new QPixmap(st->path);
+        }
+
+        return st->pixmap;
+    }
+
+    return 0;
 }

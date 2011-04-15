@@ -26,6 +26,7 @@ public:
     static MainWindow *getInstance();
 
     void startUpdating();
+    void addEntityToScene(QString path);
 
 protected:
     Ui::MainWindow *ui;

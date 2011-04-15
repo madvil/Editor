@@ -60,8 +60,8 @@ void BaseObject::setName(QString name)
 
 void BaseObject::updateName()
 {
-    if (assignedItem != 0)
-        assignedItem->setName(getName());
+//    if (assignedItem != 0)
+//        assignedItem->setName(getName());
 }
 
 void BaseObject::setSelected(bool selected)

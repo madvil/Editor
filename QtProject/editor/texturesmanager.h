@@ -2,9 +2,11 @@
 #define TEXTURESMANAGER_H
 
 #include <QObject>
+#include <QVector>
 #include <QPixmap>
 #include <QListWidget>
 #include <QDebug>
+#include "simpletexture.h"
 
 class TexturesManager : public QObject
 {
@@ -16,6 +18,8 @@ public:
     static TexturesManager *getInstance();
 
     QPixmap *getNone();
+    void addTexture(QString path);
+    QPixmap *getTexture(QString path);
 
 protected:
     QListWidget *parent;

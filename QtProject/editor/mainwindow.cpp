@@ -1,5 +1,7 @@
 #include <QSplitter>
 #include <QHBoxLayout>
+#include <QFileDialog>
+#include <QFileInfo>
 #include "mainwindow.h"
 #include "entity.h"
 #include "editortreewidgetmanager.h"
@@ -47,6 +49,12 @@ MainWindow *MainWindow::getInstance()
 void MainWindow::startUpdating()
 {
     timer->start(5);
+}
+
+void MainWindow::addEntityToScene(QString path)
+{
+    scene->addEntity(TexturesManager::getInstance()->getTexture(path));
+    glWidget->repaint();
 }
 
 bool MainWindow::eventFilter(QObject *target, QEvent *event)
@@ -117,9 +125,27 @@ void MainWindow::initEditorToolBar()
 
 TextureListItemWidget *MainWindow::addTextureItem(int page)
 {
+    QString name = "";
+    QString fname = "";
+
+    if (page == 1) {
+        QDir().mkdir("textures");
+        fname = QFileDialog::getOpenFileName(this, tr("Picture"), ".", tr("PNG (*.png)"));
+        if (fname.isEmpty())
+            return 0;
+
+        QFileInfo file(fname);
+        name = file.baseName();
+        fname = file.canonicalFilePath();
+        TexturesManager::getInstance()->addTexture(fname);
+    }
+
     QListWidgetItem *item = new QListWidgetItem(ui->textureListWidget);
     TextureListItemWidget *textureItem = new TextureListItemWidget;
     textureItem->setPage(page);
+    textureItem->setName(name);
+    textureItem->setFilePath(fname);
+    textureItem->setToolTip(name);
     item->setSizeHint(QSize(100, 100));
 
     ui->textureListWidget->setItemWidget(item, textureItem);

@@ -88,8 +88,17 @@ border-radius: 0px;</string>
        <property name="text">
         <string>Texture name</string>
        </property>
+       <property name="scaledContents">
+        <bool>false</bool>
+       </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>false</bool>
+       </property>
+       <property name="margin">
+        <number>0</number>
        </property>
       </widget>
       <widget class="QLabel" name="label">

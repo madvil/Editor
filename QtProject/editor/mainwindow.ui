@@ -350,7 +350,7 @@ color:rgb(255,255,255);
        </property>
        <widget class="QWidget" name="tab_3">
         <attribute name="title">
-         <string>Textures</string>
+         <string>Entities</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <property name="spacing">
