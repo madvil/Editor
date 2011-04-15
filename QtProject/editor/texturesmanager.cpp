@@ -56,3 +56,13 @@ QPixmap *TexturesManager::getTexture(QString path)
 
     return 0;
 }
+
+int TexturesManager::count()
+{
+    return textures.count();
+}
+
+QString TexturesManager::getPath(int ind)
+{
+    return textures.at(ind)->path;
+}

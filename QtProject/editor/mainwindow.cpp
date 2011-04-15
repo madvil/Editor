@@ -2,6 +2,7 @@
 #include <QHBoxLayout>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QTextStream>
 #include "mainwindow.h"
 #include "entity.h"
 #include "editortreewidgetmanager.h"
@@ -28,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     initWidgets();
     initLayouts();
     initEditorToolBar();
+
+    loadTexturesList();
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
@@ -123,26 +126,76 @@ void MainWindow::initEditorToolBar()
     ui->editorToolBarHorizontalLayout->addWidget(editorToolBar);
 }
 
+void MainWindow::saveTexturesList()
+{
+    QDir().mkdir("textures");
+    QFile file("textures/list.txt");
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream ts(&file);
+        ts.setCodec("UTF-8");
+
+        for (int i = 0; i < TexturesManager::getInstance()->count(); i++) {
+            ts << TexturesManager::getInstance()->getPath(i) << endl;
+        }
+
+        file.close();
+    }
+}
+
+void MainWindow::loadTexturesList()
+{
+    QFile file("textures/list.txt");
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream ts(&file);
+        ts.setCodec("UTF-8");
+
+        QString line = ts.readLine();
+        while (!line.isEmpty()) {
+            addTextureItem(line);
+            line = ts.readLine();
+        }
+
+        file.close();
+    }
+}
+
 TextureListItemWidget *MainWindow::addTextureItem(int page)
 {
-    QString name = "";
-    QString fname = "";
-
     if (page == 1) {
         QDir().mkdir("textures");
-        fname = QFileDialog::getOpenFileName(this, tr("Picture"), ".", tr("PNG (*.png)"));
+        QString fname = QFileDialog::getOpenFileName(this, tr("Picture"), ".", tr("PNG (*.png)"));
         if (fname.isEmpty())
             return 0;
 
-        QFileInfo file(fname);
-        name = file.baseName();
-        fname = file.canonicalFilePath();
-        TexturesManager::getInstance()->addTexture(fname);
+        TextureListItemWidget *textureItem = addTextureItem(fname);
+        saveTexturesList();
+        return textureItem;
     }
 
     QListWidgetItem *item = new QListWidgetItem(ui->textureListWidget);
     TextureListItemWidget *textureItem = new TextureListItemWidget;
-    textureItem->setPage(page);
+    textureItem->setPage(0);
+    item->setSizeHint(QSize(100, 100));
+
+    ui->textureListWidget->setItemWidget(item, textureItem);
+
+    return textureItem;
+}
+
+TextureListItemWidget *MainWindow::addTextureItem(QString path)
+{
+    QFileInfo file(path);
+
+    if (!file.exists())
+        return 0;
+
+    QString name = file.baseName();
+    QString fname = file.canonicalFilePath();
+    TexturesManager::getInstance()->addTexture(fname);
+
+    QListWidgetItem *item = new QListWidgetItem(ui->textureListWidget);
+    TextureListItemWidget *textureItem = new TextureListItemWidget;
+    textureItem->setPage(1);
     textureItem->setName(name);
     textureItem->setFilePath(fname);
     textureItem->setToolTip(name);
@@ -154,7 +207,7 @@ TextureListItemWidget *MainWindow::addTextureItem(int page)
 
 void MainWindow::addNewTexture()
 {
-    addTextureItem();
+    addTextureItem(1);
 }
 
 void MainWindow::animate()

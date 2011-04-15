@@ -21,6 +21,9 @@ public:
     void addTexture(QString path);
     QPixmap *getTexture(QString path);
 
+    int count();
+    QString getPath(int ind);
+
 protected:
     QListWidget *parent;
 

@@ -28,8 +28,8 @@ void TextureListItemWidget::setPage(int page)
 
 void TextureListItemWidget::setName(QString name)
 {
-    if (name.length() > 12) {
-        ui->textureNameLabel->setText(name.left(12) + "...");
+    if (name.length() > 13) {
+        ui->textureNameLabel->setText(name.left(13) + "...");
     } else {
         ui->textureNameLabel->setText(name);
     }

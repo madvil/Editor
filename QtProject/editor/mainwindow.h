@@ -46,7 +46,11 @@ protected:
     void initTexturesListWidget();
     void initEditorToolBar();
 
+    void saveTexturesList();
+    void loadTexturesList();
+
     TextureListItemWidget *addTextureItem(int page = 1);
+    TextureListItemWidget *addTextureItem(QString path);
 
 public slots:
     void addNewTexture();
