@@ -205,6 +205,31 @@ TextureListItemWidget *MainWindow::addTextureItem(QString path)
     return textureItem;
 }
 
+void MainWindow::save(QString path, bool toExport)
+{
+    this->path = path;
+    setWindowTitle("2D Level Editor [" + path + "]");
+
+    QFile file(path);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QXmlStreamWriter xmlWriter(&file);
+        xmlWriter.setAutoFormatting(true);
+        xmlWriter.writeStartDocument();
+        xmlWriter.writeStartElement("level");
+
+        scene->save(&xmlWriter, toExport);
+
+        xmlWriter.writeEndDocument();
+        file.close();
+    }
+}
+
+void MainWindow::load(QString path)
+{
+    this->path = path;
+    setWindowTitle("2D Level Editor [" + path + "]");
+}
+
 void MainWindow::addNewTexture()
 {
     addTextureItem(1);
@@ -250,4 +275,23 @@ void MainWindow::on_addEntityToolBtn_clicked()
 {
     scene->addEntity(TexturesManager::getInstance()->getNone())->select();
     glWidget->repaint();
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    if (path.isEmpty()) {
+        on_actionSave_as_new_triggered();
+    } else {
+        save(path, false);
+    }
+}
+
+void MainWindow::on_actionSave_as_new_triggered()
+{
+    save(QFileDialog::getSaveFileName(this, tr("Level"), ".", tr("XML (*.xml)")), false);
+}
+
+void MainWindow::on_actionLoad_triggered()
+{
+
 }

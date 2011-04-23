@@ -57,6 +57,19 @@ QPixmap *TexturesManager::getTexture(QString path)
     return 0;
 }
 
+QString TexturesManager::getPath(QPixmap *pixmap)
+{
+    if (pixmap != 0) {
+        foreach (SimpleTexture *st, textures) {
+            if (st->pixmap == pixmap) {
+                return st->path;
+            }
+        }
+    }
+
+    return "none";
+}
+
 int TexturesManager::count()
 {
     return textures.count();

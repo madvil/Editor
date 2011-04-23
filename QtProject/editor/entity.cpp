@@ -113,3 +113,23 @@ bool Entity::checkCorner(int w_x, int w_y, Scene *scene)
 
     return checkedCorner;
 }
+
+void Entity::save(QXmlStreamWriter *xml, bool toExport)
+{
+    xml->writeStartElement("entity");
+    {
+        xml->writeAttribute("x", posX->valueText());
+        xml->writeAttribute("y", posY->valueText());
+        xml->writeAttribute("z", posZ->valueText());
+        xml->writeAttribute("angle", angle->valueText());
+        xml->writeAttribute("width", width->valueText());
+        xml->writeAttribute("height", height->valueText());
+        xml->writeAttribute("texture", TexturesManager::getInstance()->getPath(pixmap));
+    }
+    xml->writeEndElement();
+}
+
+void Entity::load(QXmlStreamReader *xml)
+{
+
+}

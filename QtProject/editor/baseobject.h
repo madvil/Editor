@@ -39,8 +39,8 @@ public:
 
     void select();
 
-    virtual void save(QDataStream *ds) = 0;
-    virtual void load(QDataStream *ds) = 0;
+    virtual void save(QXmlStreamWriter *ds, bool toExport) = 0;
+    virtual void load(QXmlStreamReader *ds) = 0;
 
 protected:
     QtAbstractPropertyBrowser *propertyBrowser;

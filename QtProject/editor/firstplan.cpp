@@ -13,3 +13,17 @@ void Firstplan::paint(QPainter *painter, QPaintEvent *event)
 {
 
 }
+
+void Firstplan::save(QXmlStreamWriter *xml, bool toExport)
+{
+    xml->writeStartElement("firstplan");
+    {
+
+    }
+    xml->writeEndElement();
+}
+
+void Firstplan::load(QXmlStreamReader *xml)
+{
+
+}

@@ -57,3 +57,19 @@ void Background::setOpacity(float opacity)
 {
     PropertyManagers::getInstance()->getDoublePropertyManager()->setValue(this->opacity, opacity);
 }
+
+void Background::save(QXmlStreamWriter *xml, bool toExport)
+{
+    xml->writeStartElement("background");
+    {
+        xml->writeAttribute("top_border", topBorder->valueText());
+        xml->writeAttribute("bottom_border", bottomBorder->valueText());
+        xml->writeAttribute("opacity", opacity->valueText());
+    }
+    xml->writeEndElement();
+}
+
+void Background::load(QXmlStreamReader *xml)
+{
+
+}

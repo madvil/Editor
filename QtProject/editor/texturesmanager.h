@@ -20,6 +20,7 @@ public:
     QPixmap *getNone();
     void addTexture(QString path);
     QPixmap *getTexture(QString path);
+    QString getPath(QPixmap *pixmap);
 
     int count();
     QString getPath(int ind);

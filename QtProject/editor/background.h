@@ -28,8 +28,8 @@ public:
 
     void setSliding(int sliding) { this->sliding = sliding; }
 
-    virtual void save(QDataStream *ds) { }
-    virtual void load(QDataStream *ds) { }
+    virtual void save(QXmlStreamWriter *xml, bool toExport);
+    virtual void load(QXmlStreamReader *xml);
 
 protected:
     QBrush bgColor;

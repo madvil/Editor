@@ -51,8 +51,8 @@ public:
     void setPixmap(QPixmap *pixmap) { this->pixmap = pixmap; }
     QPixmap *getPixmap() { return pixmap; }
 
-    virtual void save(QDataStream *ds) { }
-    virtual void load(QDataStream *ds) { }
+    virtual void save(QXmlStreamWriter *xml, bool toExport);
+    virtual void load(QXmlStreamReader *xml);
 
 protected:
     QtProperty *geometryGroup;

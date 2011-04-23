@@ -35,6 +35,7 @@ protected:
     GLWidget *glWidget;
     Scene *scene;
     QTimer *timer;
+    QString path;
 
     //editor toolbar
     QToolBar *editorToolBar;
@@ -52,6 +53,9 @@ protected:
     TextureListItemWidget *addTextureItem(int page = 1);
     TextureListItemWidget *addTextureItem(QString path);
 
+    void save(QString path, bool toExport);
+    void load(QString path);
+
 public slots:
     void addNewTexture();
     void animate();
@@ -60,6 +64,11 @@ public slots:
     void propertyChanged(QtProperty *property);
     void on_addEntityToolBtn_clicked();
     void on_pushButton_clicked();
+
+private slots:
+    void on_actionLoad_triggered();
+    void on_actionSave_as_new_triggered();
+    void on_actionSave_triggered();
 };
 
 #endif // MAINWINDOW_H

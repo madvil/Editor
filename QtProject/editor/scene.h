@@ -38,8 +38,8 @@ public:
     void setWorldHeight(int worldHeight);
     int getWorldHeight() const { return worldHeight->valueText().toInt(); }
 
-    virtual void save(QDataStream *ds) { }
-    virtual void load(QDataStream *ds) { }
+    virtual void save(QXmlStreamWriter *xml, bool toExport);
+    virtual void load(QXmlStreamReader *xml);
 
     int convertWindowCoordToWorld(int w_y);
     int convertWorldCoordToWindow(int y);

@@ -124,6 +124,29 @@ void Scene::setWorldHeight(int worldHeight)
     PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->worldHeight, worldHeight);
 }
 
+void Scene::save(QXmlStreamWriter *xml, bool toExport)
+{
+    xml->writeStartElement("scene");
+    {
+        xml->writeAttribute("target_height", tdHeight->valueText());
+        xml->writeAttribute("target_width", tdWidth->valueText());
+        xml->writeAttribute("world_height", worldHeight->valueText());
+
+        background->save(xml, toExport);
+        firstplan->save(xml, toExport);
+
+        foreach (Entity *obj, paintObjects) {
+            obj->save(xml, toExport);
+        }
+    }
+    xml->writeEndElement();
+}
+
+void Scene::load(QXmlStreamReader *xml)
+{
+
+}
+
 int Scene::convertWindowCoordToWorld(int w_y)
 {
     int deltaHeight = (lastHeight / 6);
