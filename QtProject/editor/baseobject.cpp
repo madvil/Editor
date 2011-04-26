@@ -13,7 +13,7 @@ BaseObject::BaseObject(QtAbstractPropertyBrowser *propertyBrowser) : QObject(pro
     name = addNewProperty("Name", PropertyManagers::getInstance()->getStringPropertyManager());
 
     setRootName(UNKNOWN);
-    setName(DEFAULT_NAME);    
+    setName(DEFAULT_NAME);
 }
 
 BaseObject::~BaseObject()

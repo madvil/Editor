@@ -561,6 +561,8 @@ border-bottom: 1px solid #000000;</string>
     <addaction name="actionSave_as_new"/>
     <addaction name="actionLoad"/>
     <addaction name="separator"/>
+    <addaction name="actionExport"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -594,6 +596,11 @@ border-bottom: 1px solid #000000;</string>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>Export</string>
    </property>
   </action>
  </widget>

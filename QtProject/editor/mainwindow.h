@@ -66,6 +66,8 @@ public slots:
     void on_pushButton_clicked();
 
 private slots:
+    void on_actionExport_triggered();
+    void on_editorTreeWidget_doubleClicked(QModelIndex index);
     void on_actionLoad_triggered();
     void on_actionSave_as_new_triggered();
     void on_actionSave_triggered();

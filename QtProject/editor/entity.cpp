@@ -11,7 +11,6 @@ Entity::Entity(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(property
     setRootName(ENTITY_GROUP);
     setName(tr("Entity ") + QString::number(ENTITY_COUNTER++));
     init();
-
     checkedCorner = false;
     drawRect = false;
     pixmap = 0;
@@ -124,12 +123,28 @@ void Entity::save(QXmlStreamWriter *xml, bool toExport)
         xml->writeAttribute("angle", angle->valueText());
         xml->writeAttribute("width", width->valueText());
         xml->writeAttribute("height", height->valueText());
-        xml->writeAttribute("texture", TexturesManager::getInstance()->getPath(pixmap));
+
+        QFileInfo fInfo(TexturesManager::getInstance()->getPath(pixmap));
+        if (toExport) {
+            xml->writeAttribute("texture", fInfo.fileName());
+        } else {
+            xml->writeAttribute("texture", fInfo.canonicalFilePath());
+        }
     }
     xml->writeEndElement();
 }
 
 void Entity::load(QXmlStreamReader *xml)
 {
+    setPosX(xml->attributes().value("x").toString().toInt());
+    setPosY(xml->attributes().value("y").toString().toInt());
+    setPosZ(xml->attributes().value("z").toString().toInt());
+    setAngle(xml->attributes().value("angle").toString().toInt());
+    setWidth(xml->attributes().value("width").toString().toInt());
+    setHeight(xml->attributes().value("height").toString().toInt());
 
+    pixmap = TexturesManager::getInstance()->getTexture(xml->attributes().value("texture").toString());
+
+    xml->skipCurrentElement();
+    xml->readNext();
 }

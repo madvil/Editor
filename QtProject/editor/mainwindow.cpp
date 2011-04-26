@@ -34,6 +34,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
+
+//    new Entity(propertyBrowser);
 }
 
 MainWindow::~MainWindow()
@@ -56,7 +58,7 @@ void MainWindow::startUpdating()
 
 void MainWindow::addEntityToScene(QString path)
 {
-    scene->addEntity(TexturesManager::getInstance()->getTexture(path));
+    scene->addEntity(TexturesManager::getInstance()->getTexture(path))->select();
     glWidget->repaint();
 }
 
@@ -228,6 +230,34 @@ void MainWindow::load(QString path)
 {
     this->path = path;
     setWindowTitle("2D Level Editor [" + path + "]");
+
+    QFile file(path);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        ui->editorTreeWidget->clear();
+        EditorTreeWidgetManager::getInstance()->clear();
+
+        delete scene;
+        scene = new Scene(propertyBrowser);
+        glWidget->setScene(scene);
+
+        QXmlStreamReader xmlReader(&file);
+
+        xmlReader.readNext();
+        while (!xmlReader.atEnd())
+        {
+            if (xmlReader.isStartElement()) {
+                if (xmlReader.name() == "level") {
+                    scene->load(&xmlReader);
+                }
+            } else {
+                xmlReader.readNext();
+            }
+        }
+
+        file.close();
+    }
+
+    glWidget->repaint();
 }
 
 void MainWindow::addNewTexture()
@@ -260,10 +290,7 @@ void MainWindow::on_editorTreeWidget_itemClicked(QTreeWidgetItem *item, int colu
 
 void MainWindow::propertyChanged(QtProperty *property)
 {
-    if (glWidget != 0)
-        glWidget->repaint();
 
-    EditorTreeWidgetManager::getInstance()->updateNames();
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -273,8 +300,7 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_addEntityToolBtn_clicked()
 {
-    scene->addEntity(TexturesManager::getInstance()->getNone())->select();
-    glWidget->repaint();
+    addEntityToScene("");
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -293,5 +319,15 @@ void MainWindow::on_actionSave_as_new_triggered()
 
 void MainWindow::on_actionLoad_triggered()
 {
+    load(QFileDialog::getOpenFileName(this, tr("Level"), ".", tr("XML (*.xml)")));
+}
 
+void MainWindow::on_editorTreeWidget_doubleClicked(QModelIndex index)
+{
+
+}
+
+void MainWindow::on_actionExport_triggered()
+{
+    save(QFileDialog::getSaveFileName(this, tr("Level"), ".", tr("XML (*.xml)")), true);
 }

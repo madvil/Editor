@@ -3,11 +3,12 @@
 static EditorTreeWidgetManager *singletone;
 static QList<EditorTreeWidgetItem *> rootItems;
 static bool firstSelect = true;
+static QTreeWidget *s_parent;
 
 EditorTreeWidgetManager::EditorTreeWidgetManager(QTreeWidget *parent, QtAbstractPropertyBrowser *propertyBrowser)
     : QObject(parent)
 {
-    this->parent = parent;
+    s_parent = parent;
     this->propertyBrowser = propertyBrowser;
     singletone = this;
     lastSelected = 0;
@@ -37,7 +38,7 @@ void EditorTreeWidgetManager::addNewObject(BaseObject *object)
     }
 
     if (!resultOk) {
-        parentItem = new EditorTreeWidgetItem(parent);
+        parentItem = new EditorTreeWidgetItem(s_parent);
         parentItem->setName(object->getRootName());
         parentItem->setIsRoot(true);
         rootItems << parentItem;
@@ -57,6 +58,8 @@ void EditorTreeWidgetManager::select(EditorTreeWidgetItem *item)
 
     if (lastSelected != 0 && lastSelected->getAssignedObject() != 0)
         lastSelected->getAssignedObject()->setSelected(true);
+
+    updateNames();
 }
 
 void EditorTreeWidgetManager::deselect()
@@ -68,4 +71,10 @@ void EditorTreeWidgetManager::deselect()
 void EditorTreeWidgetManager::reset()
 {
     lastSelected = 0;
+}
+
+void EditorTreeWidgetManager::clear()
+{
+    rootItems.clear();
+    reset();
 }

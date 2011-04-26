@@ -21,11 +21,11 @@ public:
     void select(EditorTreeWidgetItem *item);
     void deselect();
     void reset();
+    void clear();
 
     EditorTreeWidgetItem *getSelected() const { return lastSelected; }
 
 protected:
-    QTreeWidget *parent;
     QtAbstractPropertyBrowser *propertyBrowser;
     EditorTreeWidgetItem *lastSelected;
 

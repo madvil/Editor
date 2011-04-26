@@ -83,6 +83,8 @@ protected:
     int sliding;
     int animSliding;
 
+    void loadSceneEntry(QXmlStreamReader *xml);
+
 signals:
 
 };

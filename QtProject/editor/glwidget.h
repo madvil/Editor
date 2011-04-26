@@ -15,6 +15,8 @@ class GLWidget : public QGLWidget
 public:
     GLWidget(QWidget *parent, Scene *scene);
 
+    void setScene(Scene *scene) { this->scene = scene; }
+
 protected:
     Scene *scene;
     int lastX;

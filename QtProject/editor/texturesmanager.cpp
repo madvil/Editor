@@ -54,7 +54,7 @@ QPixmap *TexturesManager::getTexture(QString path)
         return st->pixmap;
     }
 
-    return 0;
+    return getNone();
 }
 
 QString TexturesManager::getPath(QPixmap *pixmap)

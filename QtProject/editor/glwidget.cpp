@@ -8,7 +8,7 @@ Entity *lastEntity = 0;
 GLWidget::GLWidget(QWidget *parent, Scene *scene) : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
     setAutoFillBackground(false);
-    this->scene = scene;
+    setScene(scene);
 
     toSliding = toTranslate = toTransform = false;
     lastX = lastY = lastXDelta = lastYDelta = 0;

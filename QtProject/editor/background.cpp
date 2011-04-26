@@ -71,5 +71,10 @@ void Background::save(QXmlStreamWriter *xml, bool toExport)
 
 void Background::load(QXmlStreamReader *xml)
 {
+    setBottomBorder(xml->attributes().value("top_border").toString().toInt());
+    setTopBorder(xml->attributes().value("bottom_border").toString().toInt());
+    setOpacity(xml->attributes().value("opacity").toString().toFloat());
 
+    xml->skipCurrentElement();
+    xml->readNext();
 }

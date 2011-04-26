@@ -144,7 +144,49 @@ void Scene::save(QXmlStreamWriter *xml, bool toExport)
 
 void Scene::load(QXmlStreamReader *xml)
 {
+    xml->readNext();
+    while (!xml->atEnd()) {
+        if (xml->isEndElement()) {
+            xml->readNext();
+            break;
+        }
 
+        if (xml->isStartElement()) {
+            if (xml->name() == "scene") {
+                loadSceneEntry(xml);
+            }
+        } else {
+            xml->readNext();
+        }
+    }
+}
+
+void Scene::loadSceneEntry(QXmlStreamReader *xml)
+{
+    paintObjects.clear();
+    setTDHeight(xml->attributes().value("target_height").toString().toInt());
+    setTDWidth(xml->attributes().value("target_width").toString().toInt());
+    setWorldHeight(xml->attributes().value("world_height").toString().toInt());
+
+    xml->readNext();
+    while (!xml->atEnd()) {
+        if (xml->isEndElement()) {
+            xml->readNext();
+            break;
+        }
+
+        if (xml->isStartElement()) {
+            if (xml->name() == "background") {
+                background->load(xml);
+            } else if (xml->name() == "firstplan") {
+                firstplan->load(xml);
+            } else if (xml->name() == "entity") {
+                addEntity(0, 0, 0, 0)->load(xml);
+            }
+        } else {
+            xml->readNext();
+        }
+    }
 }
 
 int Scene::convertWindowCoordToWorld(int w_y)
@@ -189,7 +231,7 @@ Entity *Scene::addEntity(QPixmap *pixmap)
     Entity *e = addEntity((sliding + 10) / getRatio(), getWorldHeight() / 2 - h / 2, w, w);
     e->setPixmap(pixmap);
 
-    return addEntity(e);
+    return e;
 }
 
 Entity *Scene::addEntity(int x, int y, int width, int height)
