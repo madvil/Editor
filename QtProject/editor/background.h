@@ -23,6 +23,12 @@ public:
     void setBottomBorder(int bottomBorder);
     int getBottomBorder() const { return bottomBorder->valueText().toInt(); }
 
+    void setLeftBorder(int leftBorder);
+    int getLeftBorder() const { return leftBorder->valueText().toInt(); }
+
+    void setRightBorder(int rightBorder);
+    int getRightBorder() const { return rightBorder->valueText().toInt(); }
+
     void setOpacity(float opacity);
     float getOpacity() const { return opacity->valueText().toFloat(); }
 
@@ -36,6 +42,8 @@ protected:
     QBrush bgTexture;
     QtProperty *topBorder;
     QtProperty *bottomBorder;
+    QtProperty *leftBorder;
+    QtProperty *rightBorder;
     QtProperty *opacity;
     int sliding;
     bool fixed;

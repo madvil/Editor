@@ -16,16 +16,22 @@ Background::Background(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(
     name->setEnabled(false);
     topBorder = addNewProperty("Top border (%)", PropertyManagers::getInstance()->getIntPropertyManager());
     bottomBorder = addNewProperty("Bottom border (%)", PropertyManagers::getInstance()->getIntPropertyManager());
+    leftBorder = addNewProperty("Left border (%)", PropertyManagers::getInstance()->getIntPropertyManager());
+    rightBorder = addNewProperty("Right border (%)", PropertyManagers::getInstance()->getIntPropertyManager());
     opacity = addNewProperty("Opacity", PropertyManagers::getInstance()->getDoublePropertyManager());
 
     PropertyManagers::getInstance()->getIntPropertyManager()->setRange(topBorder, 0, 1000);
     PropertyManagers::getInstance()->getIntPropertyManager()->setRange(bottomBorder, 0, 1000);
+    PropertyManagers::getInstance()->getIntPropertyManager()->setRange(leftBorder, 0, 1000);
+    PropertyManagers::getInstance()->getIntPropertyManager()->setRange(rightBorder, 0, 1000);
     PropertyManagers::getInstance()->getDoublePropertyManager()->setRange(opacity, 0, 1);
     PropertyManagers::getInstance()->getDoublePropertyManager()->setSingleStep(opacity, 0.1);
 
     setTopBorder(100);
     setBottomBorder(100);
-    setOpacity(0);
+    setLeftBorder(100);
+    setRightBorder(100);
+    setOpacity(0.5);
 }
 
 void Background::paint(QPainter *painter, QPaintEvent *event)
@@ -53,6 +59,16 @@ void Background::setBottomBorder(int bottomBorder)
     PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->bottomBorder, bottomBorder);
 }
 
+void Background::setLeftBorder(int leftBorder)
+{
+    PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->leftBorder, leftBorder);
+}
+
+void Background::setRightBorder(int rightBorder)
+{
+    PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->rightBorder, rightBorder);
+}
+
 void Background::setOpacity(float opacity)
 {
     PropertyManagers::getInstance()->getDoublePropertyManager()->setValue(this->opacity, opacity);
@@ -64,6 +80,8 @@ void Background::save(QXmlStreamWriter *xml, bool toExport)
     {
         xml->writeAttribute("top_border", topBorder->valueText());
         xml->writeAttribute("bottom_border", bottomBorder->valueText());
+        xml->writeAttribute("left_border", leftBorder->valueText());
+        xml->writeAttribute("right_border", rightBorder->valueText());
         xml->writeAttribute("opacity", opacity->valueText());
     }
     xml->writeEndElement();
@@ -73,6 +91,8 @@ void Background::load(QXmlStreamReader *xml)
 {
     setBottomBorder(xml->attributes().value("top_border").toString().toInt());
     setTopBorder(xml->attributes().value("bottom_border").toString().toInt());
+    setLeftBorder(xml->attributes().value("left_border").toString().toInt());
+    setRightBorder(xml->attributes().value("right_border").toString().toInt());
     setOpacity(xml->attributes().value("opacity").toString().toFloat());
 
     xml->skipCurrentElement();

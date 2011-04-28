@@ -27,11 +27,11 @@ public:
     void setPosZ(int posZ);
     int getPosZ() const { return posZ->valueText().toFloat(); }
 
-    void setScaleX(float scX);
-    float getScaleX() const { return scX->valueText().toFloat(); }
+    void setTexX(float tX);
+    float getTexX() const { return tX->valueText().toFloat(); }
 
-    void setScaleY(float scY);
-    float getScaleY() const { return scY->valueText().toFloat(); }
+    void setTexY(float tY);
+    float getTexY() const { return tY->valueText().toFloat(); }
 
     void setAngle(int angle);
     int getAngle() const { return angle->valueText().toInt(); }
@@ -59,8 +59,8 @@ protected:
     QtProperty *posX;
     QtProperty *posY;
     QtProperty *posZ;
-    QtProperty *scX;
-    QtProperty *scY;
+    QtProperty *tX;
+    QtProperty *tY;
     QtProperty *angle;
     QtProperty *width;
     QtProperty *height;

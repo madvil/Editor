@@ -346,7 +346,7 @@ color:rgb(255,255,255);
         <string notr="true"/>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab_3">
         <attribute name="title">
@@ -399,19 +399,6 @@ color:rgb(255,255,255);
         <attribute name="title">
          <string>Tab 2</string>
         </attribute>
-        <widget class="QPushButton" name="pushButton">
-         <property name="geometry">
-          <rect>
-           <x>170</x>
-           <y>70</y>
-           <width>75</width>
-           <height>25</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>PushButton</string>
-         </property>
-        </widget>
        </widget>
       </widget>
      </item>

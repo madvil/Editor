@@ -293,11 +293,6 @@ void MainWindow::propertyChanged(QtProperty *property)
 
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    propertyBrowser->clear();
-}
-
 void MainWindow::on_addEntityToolBtn_clicked()
 {
     addEntityToScene("");

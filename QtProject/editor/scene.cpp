@@ -90,8 +90,16 @@ void Scene::paint(QPainter *painter, QPaintEvent *event, GLWidget *glWidget)
         painter->drawLine(QPoint((i * d) * r, deltaHeight * 5), QPoint((i * d) * r, deltaHeight * 5 + 5));
     }
 
+    float d_ = d;
+    d = (float)getWorldHeight() * ((float)getTDWidth() / (float)getTDHeight());
+    start = (sliding / r) / (float)d;
+    count = start + (event->rect().width() / r) / (float)d + 2;
+    for (int i = start; i < count; i++) {
+        painter->drawLine(QPoint((i * d) * r, 0), QPoint((i * d) * r, event->rect().bottom()));
+    }
+
     painter->resetMatrix();
-    painter->drawText(5, deltaHeight - 20, "x" + QString::number(d));
+    painter->drawText(5, deltaHeight - 20, "x" + QString::number(d_));
 }
 
 bool Scene::animate()
