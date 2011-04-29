@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     texturesmanager.cpp \
     firstplan.cpp \
     landscape.cpp \
-    movable.cpp
+    movable.cpp \
+    mover.cpp
 
 HEADERS  += mainwindow.h \
     test.h \
@@ -60,7 +61,8 @@ HEADERS  += mainwindow.h \
     firstplan.h \
     simpletexture.h \
     landscape.h \
-    movable.h
+    movable.h \
+    mover.h
 
 FORMS    += mainwindow.ui \
     texturelistitemwidget.ui
