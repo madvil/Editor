@@ -12,7 +12,7 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-     qtpropertybrowser/qtvariantproperty.cpp \
+    qtpropertybrowser/qtvariantproperty.cpp \
     qtpropertybrowser/qttreepropertybrowser.cpp \
     qtpropertybrowser/qtpropertymanager.cpp \
     qtpropertybrowser/qtpropertybrowserutils.cpp \
@@ -31,7 +31,9 @@ SOURCES += main.cpp\
     editortreewidgetmanager.cpp \
     transformer.cpp \
     texturesmanager.cpp \
-    firstplan.cpp
+    firstplan.cpp \
+    landscape.cpp \
+    movable.cpp
 
 HEADERS  += mainwindow.h \
     test.h \
@@ -56,7 +58,9 @@ HEADERS  += mainwindow.h \
     transformer.h \
     texturesmanager.h \
     firstplan.h \
-    simpletexture.h
+    simpletexture.h \
+    landscape.h \
+    movable.h
 
 FORMS    += mainwindow.ui \
     texturelistitemwidget.ui

@@ -6,7 +6,7 @@
 
 static int ENTITY_COUNTER = 1;
 
-Entity::Entity(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBrowser)
+Entity::Entity(QtAbstractPropertyBrowser *propertyBrowser) : Movable(propertyBrowser)
 {
     setRootName(ENTITY_GROUP);
     setName(tr("Entity ") + QString::number(ENTITY_COUNTER++));
@@ -15,15 +15,11 @@ Entity::Entity(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(property
     drawRect = false;
     pixmap = 0;
 
-    geometryGroup = addNewProperty("Geometry", PropertyManagers::getInstance()->getGroupPropertyManager());
-    posX = addNewProperty("X", PropertyManagers::getInstance()->getIntPropertyManager(), geometryGroup);
-    posY = addNewProperty("Y", PropertyManagers::getInstance()->getIntPropertyManager(), geometryGroup);
-    posZ = addNewProperty("Z", PropertyManagers::getInstance()->getIntPropertyManager(), geometryGroup);
-    tX = addNewProperty("Texture X", PropertyManagers::getInstance()->getDoublePropertyManager(), geometryGroup);
-    tY = addNewProperty("Texture Y", PropertyManagers::getInstance()->getDoublePropertyManager(), geometryGroup);
-    angle = addNewProperty("Angle", PropertyManagers::getInstance()->getIntPropertyManager(), geometryGroup);
-    width = addNewProperty("Width", PropertyManagers::getInstance()->getIntPropertyManager(), geometryGroup);
-    height = addNewProperty("Height", PropertyManagers::getInstance()->getIntPropertyManager(), geometryGroup);
+    tX = addNewProperty("Texture X", PropertyManagers::getInstance()->getDoublePropertyManager());
+    tY = addNewProperty("Texture Y", PropertyManagers::getInstance()->getDoublePropertyManager());
+    angle = addNewProperty("Angle", PropertyManagers::getInstance()->getIntPropertyManager());
+    width = addNewProperty("Width", PropertyManagers::getInstance()->getIntPropertyManager());
+    height = addNewProperty("Height", PropertyManagers::getInstance()->getIntPropertyManager());
 
     PropertyManagers::getInstance()->getIntPropertyManager()->setRange(angle, 0, 360);
     PropertyManagers::getInstance()->getDoublePropertyManager()->setSingleStep(tX, 1.0);
@@ -59,27 +55,6 @@ void Entity::paint(QPainter *painter, QPaintEvent *event, Scene *scene)
         if (!selected && drawRect)
             painter->drawRect(x, y, w, h);
     }
-}
-
-void Entity::translate(int dX, int dY)
-{
-    setPosX(getPosX() - dX);
-    setPosY(getPosY() - dY);
-}
-
-void Entity::setPosX(int posX)
-{
-    PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->posX, posX);
-}
-
-void Entity::setPosY(int posY)
-{
-    PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->posY, posY);
-}
-
-void Entity::setPosZ(int posZ)
-{
-    PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->posZ, posZ);
 }
 
 void Entity::setTexX(float tX)

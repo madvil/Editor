@@ -12,5 +12,6 @@ const static QString ENTITY_GROUP(QObject::tr("Entities"));
 const static QString SCENE_NAME(QObject::tr("Scene"));
 const static QString BACKGROUND_NAME(QObject::tr("Background"));
 const static QString FIRSTPLAN_NAME(QObject::tr("Firstplan"));
+const static QString LANSCAPE_NAME(QObject::tr("Landscape"));
 
 #endif // CONSTANTS_H

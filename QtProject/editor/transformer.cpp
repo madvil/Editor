@@ -9,7 +9,7 @@ Transformer::Transformer(QObject *parent) : QObject(parent)
     whitePen = QPen(QColor(255, 255, 255));
 }
 
-void Transformer::paint(QPainter *painter, QPaintEvent *event)
+void Transformer::paint(QPainter *painter, QPaintEvent *event, bool drawResizeRect, bool drawSize)
 {
     if (assignedEntity != 0) {
         painter->save();
@@ -25,12 +25,16 @@ void Transformer::paint(QPainter *painter, QPaintEvent *event)
         painter->setPen(whitePen);
         painter->drawText(x, y - 4, "x:" + QString::number(assignedEntity->getPosX()) + "; y:" +
                           QString::number(assignedEntity->getPosY()));
-        painter->drawText(x, y + h + 13, "w:" + QString::number(assignedEntity->getWidth()) + "; h:" +
+
+        if (drawSize)
+            painter->drawText(x, y + h + 13, "w:" + QString::number(assignedEntity->getWidth()) + "; h:" +
                           QString::number(assignedEntity->getHeight()));
 
         painter->setPen(redPen);
         painter->drawRect(x, y, w, h);
-        painter->drawRect(x + w - 10, y + h - 10, 10, 10);
+
+        if (drawResizeRect)
+            painter->drawRect(x + w - 10, y + h - 10, 10, 10);
 
         painter->restore();
     }

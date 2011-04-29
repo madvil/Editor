@@ -17,7 +17,8 @@ Scene::Scene(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBr
     lastHeight = 0;
 
     background = new Background(propertyBrowser);
-    firstplan = new Firstplan(propertyBrowser, this);
+    firstplan = new Firstplan(propertyBrowser);
+    landscape = new Landscape(propertyBrowser);
     transformer = new Transformer(this);
     transparentBlack = QBrush(QColor(0, 0, 0, 90));
     transparentBlack.setStyle(Qt::Dense5Pattern);
@@ -43,6 +44,8 @@ void Scene::paint(QPainter *painter, QPaintEvent *event, GLWidget *glWidget)
     painter->fillRect(event->rect(), *background->getBgColor());
     background->paint(painter, event);
     painter->translate(-sliding, 0);
+
+    landscape->paint(painter, event, this);
 
     Entity *selectedEntity = 0;
     transformer->assignTo(0);

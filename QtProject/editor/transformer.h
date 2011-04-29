@@ -14,7 +14,7 @@ class Transformer : public QObject
     Q_OBJECT
 public:
     explicit Transformer(QObject *parent);
-    void paint(QPainter *painter, QPaintEvent *event);
+    void paint(QPainter *painter, QPaintEvent *event, bool drawResizeRect = true, bool drawSize = true);
     void assignTo(Entity *entity);
 
 protected:

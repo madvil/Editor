@@ -3,7 +3,6 @@
 
 #include "baseobject.h"
 
-class Scene;
 class QPainter;
 class QPaintEvent;
 
@@ -11,7 +10,7 @@ class Firstplan : public BaseObject
 {
     Q_OBJECT
 public:
-    Firstplan(QtAbstractPropertyBrowser *propertyBrowser, Scene *scene);
+    Firstplan(QtAbstractPropertyBrowser *propertyBrowser);
 
     void paint(QPainter *painter, QPaintEvent *event);
 
@@ -19,7 +18,6 @@ public:
     virtual void load(QXmlStreamReader *xml);
 
 protected:
-    Scene *scene;
 
 };
 

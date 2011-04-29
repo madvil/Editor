@@ -1,13 +1,13 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "baseobject.h"
+#include "movable.h"
 
 class QPainter;
 class QPaintEvent;
 class Scene;
 
-class Entity : public BaseObject
+class Entity : public Movable
 {
     Q_OBJECT
 public:
@@ -15,17 +15,6 @@ public:
 
     void paint(QPainter *painter, QPaintEvent *event) {}
     void paint(QPainter *painter, QPaintEvent *event, Scene *scene);
-
-    void translate(int dX, int dY);
-
-    void setPosX(int posX);
-    int getPosX() const { return posX->valueText().toInt(); }
-
-    void setPosY(int posY);
-    int getPosY() const { return posY->valueText().toInt(); }
-
-    void setPosZ(int posZ);
-    int getPosZ() const { return posZ->valueText().toFloat(); }
 
     void setTexX(float tX);
     float getTexX() const { return tX->valueText().toFloat(); }
@@ -55,10 +44,6 @@ public:
     virtual void load(QXmlStreamReader *xml);
 
 protected:
-    QtProperty *geometryGroup;
-    QtProperty *posX;
-    QtProperty *posY;
-    QtProperty *posZ;
     QtProperty *tX;
     QtProperty *tY;
     QtProperty *angle;

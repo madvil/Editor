@@ -8,6 +8,7 @@
 #include <QPixmap>
 #include "background.h"
 #include "firstplan.h"
+#include "landscape.h"
 #include "entity.h"
 #include "transformer.h"
 
@@ -65,6 +66,7 @@ protected:
 
     Background *background;
     Firstplan *firstplan;
+    Landscape *landscape;
     QVector<Entity *> paintObjects;
     Transformer *transformer;
     QBrush transparentBlack;
