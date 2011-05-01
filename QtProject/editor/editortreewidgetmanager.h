@@ -17,7 +17,7 @@ public:
     static EditorTreeWidgetManager *getInstance();
 
     void updateNames();
-    void addNewObject(BaseObject *object);
+    void addNewObject(BaseObject *object, bool visible = true);
     void select(EditorTreeWidgetItem *item);
     void deselect();
     void reset();

@@ -5,6 +5,7 @@
 
 BaseObject::BaseObject(QtAbstractPropertyBrowser *propertyBrowser) : QObject(propertyBrowser)
 {
+    visInTree = true;
     tag = 0;
     assignedItem = 0;
     selected = false;
@@ -24,7 +25,7 @@ BaseObject::~BaseObject()
 void BaseObject::init()
 {
     if (EditorTreeWidgetManager::getInstance() != 0)
-        EditorTreeWidgetManager::getInstance()->addNewObject(this);
+        EditorTreeWidgetManager::getInstance()->addNewObject(this, visInTree);
 }
 
 void BaseObject::setRootName(QString name)

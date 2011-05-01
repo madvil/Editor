@@ -20,15 +20,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     glWidget = 0;
 
     //init part
-    initTexturesListWidget();
     initPropertyBrowser();
 
     EditorTreeWidgetManager(ui->editorTreeWidget, propertyBrowser);
     scene = new Scene(propertyBrowser);
 
     initWidgets();
+    initTexturesListWidget();
     initLayouts();
-    initEditorToolBar();
 
     loadTexturesList();
 
@@ -116,16 +115,8 @@ void MainWindow::initLayouts()
 
 void MainWindow::initTexturesListWidget()
 {
-    TexturesManager(ui->textureListWidget);
+    TexturesManager(ui->textureListWidget, glWidget);
     connect(addTextureItem(0)->getAddButton(), SIGNAL(clicked()), this, SLOT(addNewTexture()));
-}
-
-void MainWindow::initEditorToolBar()
-{
-    editorToolBar = new QToolBar;
-
-    editorToolBar->addWidget(ui->addEntityToolBtn);
-    ui->editorToolBarHorizontalLayout->addWidget(editorToolBar);
 }
 
 void MainWindow::saveTexturesList()
@@ -137,7 +128,7 @@ void MainWindow::saveTexturesList()
         ts.setCodec("UTF-8");
 
         for (int i = 0; i < TexturesManager::getInstance()->count(); i++) {
-            ts << TexturesManager::getInstance()->getPath(i) << endl;
+            ts << TexturesManager::getInstance()->getPathByInd(i) << endl;
         }
 
         file.close();
@@ -293,11 +284,6 @@ void MainWindow::propertyChanged(QtProperty *property)
 
 }
 
-void MainWindow::on_addEntityToolBtn_clicked()
-{
-    addEntityToScene("");
-}
-
 void MainWindow::on_actionSave_triggered()
 {
     if (path.isEmpty()) {
@@ -315,11 +301,6 @@ void MainWindow::on_actionSave_as_new_triggered()
 void MainWindow::on_actionLoad_triggered()
 {
     load(QFileDialog::getOpenFileName(this, tr("Level"), ".", tr("XML (*.xml)")));
-}
-
-void MainWindow::on_editorTreeWidget_doubleClicked(QModelIndex index)
-{
-
 }
 
 void MainWindow::on_actionExport_triggered()

@@ -2,7 +2,8 @@
 #define LANDSCAPE_H
 
 #include "baseobject.h"
-#include "QPen"
+#include "mover.h"
+#include "simpletexture.h"
 
 class Scene;
 
@@ -14,6 +15,7 @@ public:
 
     void paint(QPainter *painter, QPaintEvent *event) {}
     void paint(QPainter *painter, QPaintEvent *event, Scene *scene);
+    void paintFractures(QPainter *painter, QPaintEvent *event, Scene *scene);
 
     void setLeft(int left);
     int getLeft() const { return left->valueText().toInt(); }
@@ -24,16 +26,30 @@ public:
     void setHeight(int height);
     int getHeight() const { return height->valueText().toInt(); }
 
-    virtual void save(QXmlStreamWriter *xml, bool toExport) {}
-    virtual void load(QXmlStreamReader *xml) {}
+    Mover *getMover(int w_x, int w_y);
+    Mover *addMover(int w_x, int w_y);
+    Mover *getSelectedMover() const { return lastSelected; }
+
+    virtual void save(QXmlStreamWriter *xml, bool toExport);
+    virtual void load(QXmlStreamReader *xml);
 
 protected:
+    Scene *scene;
     QtProperty *group;
     QtProperty *left;
     QtProperty *right;
     QtProperty *height;
+    SimpleTexture *tex;
+    int lastHeight;
+    int worldHeight;
+    Mover *lastSelected;
+    double **coords;
+    int lastSize;
 
-    QPen green;
+    QList<Mover *> fractures;
+
+private slots:
+    void landscapeHeightChanged(QtProperty *property);
 };
 
 #endif // LANDSCAPE_H

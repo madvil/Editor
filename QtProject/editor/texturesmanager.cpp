@@ -1,13 +1,16 @@
 #include "texturesmanager.h"
+#include "glwidget.h"
 
 static TexturesManager *singletone = 0;
-static QPixmap *none = 0;
+static GLWidget *_glWidget = 0;
+static SimpleTexture *none = 0;
 static QVector<SimpleTexture *> textures;
 
-TexturesManager::TexturesManager(QListWidget *parent) : QObject(parent)
+TexturesManager::TexturesManager(QListWidget *parent,  GLWidget *glWidget) : QObject(parent)
 {
     singletone = this;
     this->parent = parent;
+    _glWidget = glWidget;
 }
 
 TexturesManager::~TexturesManager()
@@ -20,10 +23,11 @@ TexturesManager *TexturesManager::getInstance()
     return singletone;
 }
 
-QPixmap *TexturesManager::getNone()
+SimpleTexture *TexturesManager::getNone()
 {
-    if (none == 0)
-        none = new QPixmap(":/textures/media/none.png");
+    if (none == 0) {
+        none = _glWidget->loadTexture(":/textures/media/none.png");
+    }
 
     return none;
 }
@@ -36,7 +40,7 @@ void TexturesManager::addTexture(QString path)
     textures << st;
 }
 
-QPixmap *TexturesManager::getTexture(QString path)
+SimpleTexture *TexturesManager::getTexture(QString path)
 {
     SimpleTexture *st = 0;
     foreach (SimpleTexture *st1, textures) {
@@ -47,21 +51,27 @@ QPixmap *TexturesManager::getTexture(QString path)
     }
 
     if (st != 0) {
-        if (st->pixmap == 0) {
-            st->pixmap = new QPixmap(st->path);
+        if (st->id == 0) {
+            QFile file(path);
+            if (file.exists()) {
+                SimpleTexture *st1 = _glWidget->loadTexture(path);
+                st->id = st1->id;
+                st->width = st1->width;
+                st->height = st1->height;
+            }
         }
 
-        return st->pixmap;
+        return st;
     }
 
     return getNone();
 }
 
-QString TexturesManager::getPath(QPixmap *pixmap)
+QString TexturesManager::getPath(unsigned id)
 {
-    if (pixmap != 0) {
+    if (id != 0) {
         foreach (SimpleTexture *st, textures) {
-            if (st->pixmap == pixmap) {
+            if (st->id == id) {
                 return st->path;
             }
         }
@@ -75,7 +85,7 @@ int TexturesManager::count()
     return textures.count();
 }
 
-QString TexturesManager::getPath(int ind)
+QString TexturesManager::getPathByInd(int ind)
 {
     return textures.at(ind)->path;
 }

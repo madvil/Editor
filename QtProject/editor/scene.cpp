@@ -13,7 +13,7 @@ Scene::Scene(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(propertyBr
     drawDebugInfo = true;
     sliding = 0;
     animSliding = 0;
-    translatingEntity = 0;
+    translatingMovable = 0;
     lastHeight = 0;
 
     background = new Background(propertyBrowser);
@@ -47,14 +47,15 @@ void Scene::paint(QPainter *painter, QPaintEvent *event, GLWidget *glWidget)
 
     landscape->paint(painter, event, this);
 
-    Entity *selectedEntity = 0;
+    Movable *selectedMovable = 0;
     transformer->assignTo(0);
     foreach (Entity *obj, paintObjects) {
         obj->paint(painter, event, this);
         if (obj->isSelected())
-            selectedEntity = obj;
+            selectedMovable = obj;
     }
 
+    landscape->paintFractures(painter, event, this);
     firstplan->paint(painter, event);
 
     //debug draws
@@ -72,7 +73,7 @@ void Scene::paint(QPainter *painter, QPaintEvent *event, GLWidget *glWidget)
     painter->setOpacity(1.0);
     painter->translate(-sliding, 0);
 
-    transformer->assignTo(selectedEntity);
+    transformer->assignTo(selectedMovable);
     transformer->paint(painter, event);
 
     float r = getRatio();
@@ -139,12 +140,15 @@ void Scene::save(QXmlStreamWriter *xml, bool toExport)
 {
     xml->writeStartElement("scene");
     {
-        xml->writeAttribute("target_height", tdHeight->valueText());
-        xml->writeAttribute("target_width", tdWidth->valueText());
+        if (!toExport) {
+            xml->writeAttribute("target_height", tdHeight->valueText());
+            xml->writeAttribute("target_width", tdWidth->valueText());
+        }
         xml->writeAttribute("world_height", worldHeight->valueText());
 
         background->save(xml, toExport);
         firstplan->save(xml, toExport);
+        landscape->save(xml, toExport);
 
         foreach (Entity *obj, paintObjects) {
             obj->save(xml, toExport);
@@ -164,7 +168,7 @@ void Scene::load(QXmlStreamReader *xml)
 
         if (xml->isStartElement()) {
             if (xml->name() == "scene") {
-                loadSceneEntry(xml);
+                loadEntry(xml);
             }
         } else {
             xml->readNext();
@@ -172,7 +176,7 @@ void Scene::load(QXmlStreamReader *xml)
     }
 }
 
-void Scene::loadSceneEntry(QXmlStreamReader *xml)
+void Scene::loadEntry(QXmlStreamReader *xml)
 {
     paintObjects.clear();
     setTDHeight(xml->attributes().value("target_height").toString().toInt());
@@ -191,6 +195,8 @@ void Scene::loadSceneEntry(QXmlStreamReader *xml)
                 background->load(xml);
             } else if (xml->name() == "firstplan") {
                 firstplan->load(xml);
+            } else if (xml->name() == "landscape") {
+                landscape->load(xml);
             } else if (xml->name() == "entity") {
                 addEntity(0, 0, 0, 0)->load(xml);
             }
@@ -230,17 +236,17 @@ Entity *Scene::addEntity(Entity *entity)
     return entity;
 }
 
-Entity *Scene::addEntity(QPixmap *pixmap)
+Entity *Scene::addEntity(SimpleTexture *st)
 {
-    if (pixmap == 0) {
+    if (st == 0) {
         return 0;
     }
 
     float d = (float)getWorldHeight() / (float)getTDHeight();
-    int w = pixmap->width() * d;
-    int h = pixmap->height() * d;
+    int w = st->width * d;
+    int h = st->height * d;
     Entity *e = addEntity((sliding + 10) / getRatio(), getWorldHeight() / 2 - h / 2, w, w);
-    e->setPixmap(pixmap);
+    e->setTex(st);
 
     return e;
 }
@@ -281,53 +287,53 @@ Entity *Scene::getEntity(int w_x, int w_y)
     return e;
 }
 
-Entity *Scene::select(int w_x, int w_y)
+Movable *Scene::getMovable(int w_x, int w_y)
 {
-    Entity *e = getEntity(w_x, w_y);
-    if (e != 0)
-        e->select();
+    Movable *m = landscape->getMover(w_x, w_y);
+    if (m != 0)
+        return m;
 
-    return e;
+    return getEntity(w_x, w_y);
 }
 
-void Scene::startModifyEntity(Entity *e)
+void Scene::startModifyMovable(Movable *m)
 {
-    translatingEntity = e;
+    translatingMovable = m;
     translateX = 0;
     translateY = 0;
-    if (e != 0) {
-        startPosX = e->getPosX();
-        startPosY = e->getPosY();
-        startWidth = e->getWidth();
-        startHeight = e->getHeight();
+    if (m != 0) {
+        startPosX = m->getPosX();
+        startPosY = m->getPosY();
+        startWidth = m->getWidth();
+        startHeight = m->getHeight();
     }
 }
 
-void Scene::translateEntity(int dX, int dY)
+void Scene::translateMovable(int dX, int dY)
 {
-    if (translatingEntity != 0) {
+    if (translatingMovable != 0) {
         translateX += dX;
         translateY += dY;
-        translatingEntity->setPosX(startPosX - (float)translateX / getRatio());
-        translatingEntity->setPosY(startPosY - (float)translateY / getRatio());
+        translatingMovable->setPosX(startPosX - (float)translateX / getRatio());
+        translatingMovable->setPosY(startPosY - (float)translateY / getRatio());
     }
 }
 
-void Scene::transformEntity(int dX, int dY)
+void Scene::transformMovable(int dX, int dY)
 {
-    if (translatingEntity != 0) {
+    if (translatingMovable != 0) {
         translateX += dX;
         translateY += dY;
-        translatingEntity->setWidth(startWidth - (float)translateX / getRatio());
-        translatingEntity->setHeight(startHeight - (float)translateY / getRatio());
+        translatingMovable->setWidth(startWidth - (float)translateX / getRatio());
+        translatingMovable->setHeight(startHeight - (float)translateY / getRatio());
     }
 }
 
-void Scene::endModifyEntity()
+void Scene::endModifyMovable()
 {
     translateX = translateY = startPosX = startPosY = startWidth = startHeight = 0;
-    if (translatingEntity != 0) {
-        translatingEntity->setCheckedCorner(false);
-        translatingEntity = 0;
+    if (translatingMovable!= 0) {
+        translatingMovable->setCheckedCorner(false);
+        translatingMovable = 0;
     }
 }

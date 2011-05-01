@@ -5,8 +5,10 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QMouseEvent>
+#include <QKeyEvent>
 #include <QWheelEvent>
 #include "scene.h"
+#include "simpletexture.h"
 
 class GLWidget : public QGLWidget
 {
@@ -16,6 +18,7 @@ public:
     GLWidget(QWidget *parent, Scene *scene);
 
     void setScene(Scene *scene) { this->scene = scene; }
+    SimpleTexture *loadTexture(QString path);
 
 protected:
     Scene *scene;
@@ -27,8 +30,10 @@ protected:
     bool toTranslate;
     bool toTransform;
 
+    void initializeGL();
     void paintEvent(QPaintEvent *event);
     void mousePressEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent* event);

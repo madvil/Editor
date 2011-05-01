@@ -25,8 +25,16 @@ void EditorTreeWidgetManager::updateNames()
         lastSelected->getAssignedObject()->updateName();
 }
 
-void EditorTreeWidgetManager::addNewObject(BaseObject *object)
+void EditorTreeWidgetManager::addNewObject(BaseObject *object, bool visible)
 {
+    if (!visible) {
+        EditorTreeWidgetItem *newItem = new EditorTreeWidgetItem;
+        newItem->setName(object->getName());
+        newItem->assignObject(object);
+        object->assignEditorTreeWidgetItem(newItem);
+        return;
+    }
+
     EditorTreeWidgetItem *parentItem = 0;
     bool resultOk = false;
     for (int i = 0; i < rootItems.count(); i++) {

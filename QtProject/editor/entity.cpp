@@ -3,6 +3,7 @@
 #include "propertymanagers.h"
 #include "scene.h"
 #include "texturesmanager.h"
+#include "qgl.h"
 
 static int ENTITY_COUNTER = 1;
 
@@ -11,15 +12,11 @@ Entity::Entity(QtAbstractPropertyBrowser *propertyBrowser) : Movable(propertyBro
     setRootName(ENTITY_GROUP);
     setName(tr("Entity ") + QString::number(ENTITY_COUNTER++));
     init();
-    checkedCorner = false;
     drawRect = false;
-    pixmap = 0;
+    tex = 0;
 
     tX = addNewProperty("Texture X", PropertyManagers::getInstance()->getDoublePropertyManager());
     tY = addNewProperty("Texture Y", PropertyManagers::getInstance()->getDoublePropertyManager());
-    angle = addNewProperty("Angle", PropertyManagers::getInstance()->getIntPropertyManager());
-    width = addNewProperty("Width", PropertyManagers::getInstance()->getIntPropertyManager());
-    height = addNewProperty("Height", PropertyManagers::getInstance()->getIntPropertyManager());
 
     PropertyManagers::getInstance()->getIntPropertyManager()->setRange(angle, 0, 360);
     PropertyManagers::getInstance()->getDoublePropertyManager()->setSingleStep(tX, 1.0);
@@ -36,22 +33,52 @@ void Entity::paint(QPainter *painter, QPaintEvent *event, Scene *scene)
     int y = scene->convertWorldCoordToWindow(getPosY());
     int w = getWidth() * ratio;
     int h = getHeight() * ratio;
-    if (pixmap == 0)
-        pixmap = TexturesManager::getInstance()->getNone();
+    if (tex == 0)
+        tex = TexturesManager::getInstance()->getNone();
 
     if (!((x - scene->getSlide() < 0 || x - scene->getSlide() > event->rect().width()) &&
                        (x + w - scene->getSlide() < 0 || x + w - scene->getSlide() > event->rect().width()))) {
-        int _x = (int)getTexX();
-        int _y = (int)getTexY();
-        int _w = w / _x;
-        int _h = h / _y;
+        float _x = getTexX();
+        float _y = getTexY();
 
-        for (int i = 0; i < _x; i++) {
-            for (int j = 0; j < _y; j++) {
-                painter->drawPixmap(x + _w * i, y + _h * j, _w, _h, *pixmap);
-            }
+        painter->beginNativePainting();
+
+        float coords[8] =
+        {
+            x,     y,
+            x + w, y,
+            x + w, y + h,
+            x    , y + h,
+        };
+
+        float t_coords[8] =
+        {
+            0.0, 0.0,
+            _x,  0.0,
+            _x,  _y,
+            0.0, _y
+        };
+
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        glColor3f(1.0, 1.0, 1.0);
+
+        if (tex != 0) {
+            glEnable(GL_BLEND);
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, tex->id);
         }
-//        painter->drawPixmap(x, y, w, h, *pixmap);
+
+        glTexCoordPointer(2, GL_FLOAT, 0, t_coords);
+        glVertexPointer(2, GL_FLOAT, 0, coords);
+        glDrawArrays(GL_QUADS, 0, 4);
+
+        glDisable(GL_TEXTURE_2D);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
+
+        painter->endNativePainting();
+
         if (!selected && drawRect)
             painter->drawRect(x, y, w, h);
     }
@@ -67,34 +94,6 @@ void Entity::setTexY(float tY)
     PropertyManagers::getInstance()->getDoublePropertyManager()->setValue(this->tY, tY);
 }
 
-void Entity::setAngle(int angle)
-{
-    PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->angle, angle);
-}
-
-void Entity::setWidth(int width)
-{
-    PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->width, width);
-}
-
-void Entity::setHeight(int height)
-{
-    PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->height, height);
-}
-
-bool Entity::checkCorner(int w_x, int w_y, Scene *scene)
-{
-    checkedCorner = false;
-    int x_ = (getPosX() + getWidth()) * scene->getRatio() - scene->getSlide();
-    int y_ = scene->convertWorldCoordToWindow(getPosY() + getHeight());
-    if (w_x >= x_ - 10 && w_x <= x_) {
-        if (w_y >= y_ - 10 && w_y <= y_)
-            checkedCorner = true;
-    }
-
-    return checkedCorner;
-}
-
 void Entity::save(QXmlStreamWriter *xml, bool toExport)
 {
     xml->writeStartElement("entity");
@@ -108,7 +107,7 @@ void Entity::save(QXmlStreamWriter *xml, bool toExport)
         xml->writeAttribute("width", width->valueText());
         xml->writeAttribute("height", height->valueText());
 
-        QFileInfo fInfo(TexturesManager::getInstance()->getPath(pixmap));
+        QFileInfo fInfo(tex->path);
         if (toExport) {
             xml->writeAttribute("texture", fInfo.fileName());
         } else {
@@ -129,7 +128,7 @@ void Entity::load(QXmlStreamReader *xml)
     setWidth(xml->attributes().value("width").toString().toInt());
     setHeight(xml->attributes().value("height").toString().toInt());
 
-    pixmap = TexturesManager::getInstance()->getTexture(xml->attributes().value("texture").toString());
+    tex = TexturesManager::getInstance()->getTexture(xml->attributes().value("texture").toString());
 
     xml->skipCurrentElement();
     xml->readNext();

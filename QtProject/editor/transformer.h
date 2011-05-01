@@ -5,7 +5,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QPen>
-#include "entity.h"
+#include "movable.h"
 
 class Scene;
 
@@ -15,11 +15,11 @@ class Transformer : public QObject
 public:
     explicit Transformer(QObject *parent);
     void paint(QPainter *painter, QPaintEvent *event, bool drawResizeRect = true, bool drawSize = true);
-    void assignTo(Entity *entity);
+    void assignTo(Movable *m);
 
 protected:
     Scene *scene;
-    Entity *assignedEntity;
+    Movable *assignedMovable;
     QPen redPen;
     QPen whitePen;
 

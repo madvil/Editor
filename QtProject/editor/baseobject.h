@@ -49,6 +49,7 @@ protected:
     QMap<QString, QtProperty *> properties;
     EditorTreeWidgetItem *assignedItem;
 
+    bool visInTree;
     bool selected;
     int tag;
 

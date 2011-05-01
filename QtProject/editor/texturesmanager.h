@@ -3,27 +3,28 @@
 
 #include <QObject>
 #include <QVector>
-#include <QPixmap>
 #include <QListWidget>
 #include <QDebug>
 #include "simpletexture.h"
+
+class GLWidget;
 
 class TexturesManager : public QObject
 {
     Q_OBJECT
 public:
-    TexturesManager(QListWidget *parent = 0);
+    TexturesManager(QListWidget *parent, GLWidget *glWidget);
     ~TexturesManager();
 
     static TexturesManager *getInstance();
 
-    QPixmap *getNone();
+    SimpleTexture *getNone();
     void addTexture(QString path);
-    QPixmap *getTexture(QString path);
-    QString getPath(QPixmap *pixmap);
+    SimpleTexture *getTexture(QString path);
+    QString getPath(unsigned id);
 
     int count();
-    QString getPath(int ind);
+    QString getPathByInd(int ind);
 
 protected:
     QListWidget *parent;

@@ -45,7 +45,6 @@ protected:
     void initWidgets();
     void initLayouts();
     void initTexturesListWidget();
-    void initEditorToolBar();
 
     void saveTexturesList();
     void loadTexturesList();
@@ -62,11 +61,9 @@ public slots:
     void on_actionExit_triggered();
     void on_editorTreeWidget_itemClicked(QTreeWidgetItem *item, int column);
     void propertyChanged(QtProperty *property);
-    void on_addEntityToolBtn_clicked();
 
 private slots:
     void on_actionExport_triggered();
-    void on_editorTreeWidget_doubleClicked(QModelIndex index);
     void on_actionLoad_triggered();
     void on_actionSave_as_new_triggered();
     void on_actionSave_triggered();

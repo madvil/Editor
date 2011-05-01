@@ -1,9 +1,10 @@
 #include <QtGui>
+#include "qgl.h"
 #include "glwidget.h"
 #include "mainwindow.h"
 #include "editortreewidgetmanager.h"
 
-Entity *lastEntity = 0;
+Movable *lastMovable = 0;
 
 GLWidget::GLWidget(QWidget *parent, Scene *scene) : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
@@ -12,6 +13,24 @@ GLWidget::GLWidget(QWidget *parent, Scene *scene) : QGLWidget(QGLFormat(QGL::Sam
 
     toSliding = toTranslate = toTransform = false;
     lastX = lastY = lastXDelta = lastYDelta = 0;
+}
+
+SimpleTexture *GLWidget::loadTexture(QString path)
+{
+    SimpleTexture *st = new SimpleTexture;
+    QPixmap pmap(path);
+
+    st->path = path;
+    st->id = bindTexture(pmap, GL_TEXTURE_2D);
+    st->width = pmap.width();
+    st->height = pmap.height();
+
+    return st;
+}
+
+void GLWidget::initializeGL()
+{
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void GLWidget::paintEvent(QPaintEvent *event)
@@ -34,30 +53,44 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
         toSliding = true;
         scene->animationSlide(0);
     } else if (event->button() == Qt::LeftButton) {
-        if (lastEntity != 0 && lastEntity->checkCorner(event->x(), event->y(), scene)) {
-            scene->startModifyEntity(lastEntity);
-            toTransform = true;
-            return;
-        }
-
-        lastEntity = 0;
-        EditorTreeWidgetManager::getInstance()->deselect();
-        Entity *e = scene->getEntity(event->x(), event->y());
-        EditorTreeWidgetItem *etwi = EditorTreeWidgetManager::getInstance()->getSelected();
-        if (etwi != 0 && e != 0) {
-            lastEntity = e;
-            e->select();
-            scene->startModifyEntity(e);
-
-            if (e->isCheckedCorner()) {
+        if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
+            lastMovable = 0;
+            EditorTreeWidgetManager::getInstance()->deselect();
+            scene->getLandscape()->addMover(event->x(), event->y());
+        } else {
+            if (lastMovable != 0 && lastMovable->checkCorner(event->x(), event->y(), scene)) {
+                scene->startModifyMovable(lastMovable);
                 toTransform = true;
-            } else {
-                toTranslate = true;
+                return;
+            }
+
+            lastMovable = 0;
+            EditorTreeWidgetManager::getInstance()->deselect();
+            Movable *m = scene->getMovable(event->x(), event->y());
+            EditorTreeWidgetItem *etwi = EditorTreeWidgetManager::getInstance()->getSelected();
+            if (etwi != 0 && m != 0) {
+                lastMovable = m;
+                m->select();
+                scene->startModifyMovable(m);
+
+                if (m->isCheckedCorner()) {
+                    toTransform = true;
+                } else {
+                    toTranslate = true;
+                }
             }
         }
 
         repaint();
     }
+}
+
+void GLWidget::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (lastMovable != 0) {
+
+    }
+    repaint();
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
@@ -70,9 +103,9 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     if (toSliding) {
         scene->slide(lastXDelta);
     } else if (toTransform) {
-        scene->transformEntity(lastXDelta, lastYDelta);
+        scene->transformMovable(lastXDelta, lastYDelta);
     } else if (toTranslate) {
-        scene->translateEntity(lastXDelta, lastYDelta);
+        scene->translateMovable(lastXDelta, lastYDelta);
     }
 
     repaint();
@@ -85,7 +118,7 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event)
         MainWindow::getInstance()->startUpdating();
     }
 
-    scene->endModifyEntity();
+    scene->endModifyMovable();
     toSliding = toTranslate = toTransform = false;
 }
 

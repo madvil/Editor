@@ -2,16 +2,17 @@
 #define SIMPLETEXTURE_H
 
 #include <QObject>
-#include <QPixmap>
 
 class SimpleTexture : public QObject
 {
     Q_OBJECT
 public:
-    SimpleTexture(QObject *parent = 0) : QObject(parent) { pixmap = 0; }
+    SimpleTexture(QObject *parent = 0) : QObject(parent) { id = 0; width = height = 1; }
 
-    QPixmap *pixmap;
+    unsigned id;
     QString path;
+    int width;
+    int height;
 };
 
 #endif // SIMPLETEXTURE_H

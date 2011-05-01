@@ -8,6 +8,8 @@ class BaseObject;
 class EditorTreeWidgetItem : public QTreeWidgetItem
 {
 public:
+    EditorTreeWidgetItem() : QTreeWidgetItem(0) { init(); }
+
     EditorTreeWidgetItem(QTreeWidgetItem *parent) :
             QTreeWidgetItem(parent) { init(); }
 

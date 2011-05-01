@@ -5,12 +5,13 @@
 #include <QBrush>
 #include <QFont>
 #include <QPen>
-#include <QPixmap>
 #include "background.h"
 #include "firstplan.h"
 #include "landscape.h"
 #include "entity.h"
 #include "transformer.h"
+#include "movable.h"
+#include "simpletexture.h"
 
 class QPainter;
 class QPaintEvent;
@@ -39,6 +40,8 @@ public:
     void setWorldHeight(int worldHeight);
     int getWorldHeight() const { return worldHeight->valueText().toInt(); }
 
+    Landscape *getLandscape() const { return landscape; }
+
     virtual void save(QXmlStreamWriter *xml, bool toExport);
     virtual void load(QXmlStreamReader *xml);
 
@@ -47,16 +50,16 @@ public:
     float getRatio();
 
     Entity *addEntity(Entity *entity);
-    Entity *addEntity(QPixmap *pixmap);
+    Entity *addEntity(SimpleTexture *st);
     Entity *addEntity(int x, int y, int width, int height);
 
     Entity *getEntity(int w_x, int w_y);
-    Entity *select(int w_x, int w_y);
+    Movable *getMovable(int w_x, int w_y);
 
-    void startModifyEntity(Entity *e);
-    void translateEntity(int dX, int dY);
-    void transformEntity(int dX, int dY);
-    void endModifyEntity();
+    void startModifyMovable(Movable *m);
+    void translateMovable(int dX, int dY);
+    void transformMovable(int dX, int dY);
+    void endModifyMovable();
 
 protected:
     QtProperty *targetDeviceGroup;
@@ -72,7 +75,7 @@ protected:
     QBrush transparentBlack;
     QPen debugPen;
 
-    Entity *translatingEntity;
+    Movable *translatingMovable;
     int translateX;
     int translateY;
     int startPosX;
@@ -85,7 +88,7 @@ protected:
     int sliding;
     int animSliding;
 
-    void loadSceneEntry(QXmlStreamReader *xml);
+    void loadEntry(QXmlStreamReader *xml);
 
 signals:
 

@@ -4,31 +4,31 @@
 Transformer::Transformer(QObject *parent) : QObject(parent)
 {
     scene = (Scene *)parent;
-    assignedEntity = 0;
+    assignedMovable = 0;
     redPen = QPen(QColor(255, 0, 0));
     whitePen = QPen(QColor(255, 255, 255));
 }
 
 void Transformer::paint(QPainter *painter, QPaintEvent *event, bool drawResizeRect, bool drawSize)
 {
-    if (assignedEntity != 0) {
+    if (assignedMovable != 0) {
         painter->save();
 
         float r = scene->getRatio();
-        int x = assignedEntity->getPosX() * r;
-        int y = scene->convertWorldCoordToWindow(assignedEntity->getPosY());
-        int w = assignedEntity->getWidth() * r;
-        int h = assignedEntity->getHeight() * r;
+        int x = assignedMovable->getPosX() * r;
+        int y = scene->convertWorldCoordToWindow(assignedMovable->getPosY());
+        int w = assignedMovable->getWidth() * r;
+        int h = assignedMovable->getHeight() * r;
 
-        painter->rotate(assignedEntity->getAngle());
+        painter->rotate(assignedMovable->getAngle());
 
         painter->setPen(whitePen);
-        painter->drawText(x, y - 4, "x:" + QString::number(assignedEntity->getPosX()) + "; y:" +
-                          QString::number(assignedEntity->getPosY()));
+        painter->drawText(x, y - 4, "x:" + QString::number(assignedMovable->getPosX()) + "; y:" +
+                          QString::number(assignedMovable->getPosY()));
 
         if (drawSize)
-            painter->drawText(x, y + h + 13, "w:" + QString::number(assignedEntity->getWidth()) + "; h:" +
-                          QString::number(assignedEntity->getHeight()));
+            painter->drawText(x, y + h + 13, "w:" + QString::number(assignedMovable->getWidth()) + "; h:" +
+                          QString::number(assignedMovable->getHeight()));
 
         painter->setPen(redPen);
         painter->drawRect(x, y, w, h);
@@ -40,7 +40,7 @@ void Transformer::paint(QPainter *painter, QPaintEvent *event, bool drawResizeRe
     }
 }
 
-void Transformer::assignTo(Entity *entity)
+void Transformer::assignTo(Movable *m)
 {
-    assignedEntity = entity;
+    assignedMovable = m;
 }
