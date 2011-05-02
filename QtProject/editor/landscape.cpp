@@ -5,6 +5,12 @@
 #include "scene.h"
 #include "qgl.h"
 
+#ifndef CALLBACK
+#define CALLBACK
+#endif
+
+typedef void (CALLBACK *TessFuncPtr)();
+
 static Landscape *singletone = 0;
 int dX = 0;
 int dY = 0;
@@ -151,9 +157,9 @@ void Landscape::paint(QPainter *painter, QPaintEvent *event, Scene *scene)
     gluTessProperty(tobj, GLU_TESS_BOUNDARY_ONLY, 0);
     gluTessProperty(tobj, GLU_TESS_TOLERANCE, 0);
 
-    gluTessCallback(tobj, GLU_TESS_BEGIN, (_GLUfuncptr)glBegin);
-    gluTessCallback(tobj, GLU_TESS_END, (_GLUfuncptr)glEnd);
-    gluTessCallback(tobj, GLU_TESS_VERTEX, (_GLUfuncptr)tessVertex);
+    gluTessCallback(tobj, GLU_TESS_BEGIN, (TessFuncPtr)glBegin);
+    gluTessCallback(tobj, GLU_TESS_END, (TessFuncPtr)glEnd);
+    gluTessCallback(tobj, GLU_TESS_VERTEX, (TessFuncPtr)tessVertex);
 
     glColor3f(1.0, 1.0, 1.0);
     gluTessBeginPolygon(tobj, NULL);
