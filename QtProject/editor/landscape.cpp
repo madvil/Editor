@@ -5,11 +5,12 @@
 #include "scene.h"
 #include "qgl.h"
 
-static int dX = 0;
-static int dY = 0;
-static int maxX = 0;
-static int minY = 0;
-static int minX = 0;
+static Landscape *singletone = 0;
+int dX = 0;
+int dY = 0;
+int maxX = 0;
+int minY = 0;
+int minX = 0;
 
 void setBorders(double x, double y, int dH)
 {
@@ -22,7 +23,6 @@ void setBorders(double x, double y, int dH)
     if (minX > x)
         minX = x;
 
-//    qDebug() << minY;
     dX = maxX - minX;
     dY = dH - minY;
 }
@@ -33,19 +33,25 @@ Landscape::Landscape(QtAbstractPropertyBrowser *propertyBrowser) : BaseObject(pr
     setName(LANDSCAPE_NAME);
     init();
 
+    singletone = this;
     tex = 0;
     lastSize = 0;
     coords = 0;
     lastSelected = 0;
 
     name->setEnabled(false);
-    group = addNewProperty("Borders", PropertyManagers::getInstance()->getGroupPropertyManager());
-    left = addNewProperty("Left (screens)", PropertyManagers::getInstance()->getIntPropertyManager(), group);
-    right = addNewProperty("Right (screens)", PropertyManagers::getInstance()->getIntPropertyManager(), group);
-    height = addNewProperty("Height (%)", PropertyManagers::getInstance()->getIntPropertyManager(), group);
+    QtProperty *borders = addNewProperty("Borders", PropertyManagers::getInstance()->getGroupPropertyManager());
+    QtProperty *tiling = addNewProperty("Tiling", PropertyManagers::getInstance()->getGroupPropertyManager());
+    tX = addNewProperty("X", PropertyManagers::getInstance()->getIntPropertyManager(), tiling);
+    tY = addNewProperty("Y", PropertyManagers::getInstance()->getIntPropertyManager(), tiling);
+    left = addNewProperty("Left (screens)", PropertyManagers::getInstance()->getIntPropertyManager(), borders);
+    right = addNewProperty("Right (screens)", PropertyManagers::getInstance()->getIntPropertyManager(), borders);
+    height = addNewProperty("Height (%)", PropertyManagers::getInstance()->getIntPropertyManager(), borders);
 
     PropertyManagers::getInstance()->getIntPropertyManager()->setRange(height, 0, 100);
 
+    setTexX(1);
+    setTexY(1);
     setLeft(0);
     setRight(1);
     setHeight(50);
@@ -60,7 +66,12 @@ void CALLBACK tessVertex(void *vertex)
     double x = (_vertex[0] - (double)minX) / (double)dX;
     double y = (_vertex[1] - minY) / (double)dY;
 
-    glTexCoord2d(x * 2, y * 2);
+    if (singletone != 0) {
+        x *= singletone->getTexX();
+        y *= singletone->getTexY();
+    }
+
+    glTexCoord2d(x, y);
     glVertex2dv(_vertex);
 }
 
@@ -175,6 +186,16 @@ void Landscape::paintFractures(QPainter *painter, QPaintEvent *event, Scene *sce
 {
     foreach (Mover *m, fractures)
         m->paint(painter, event, scene);
+}
+
+void Landscape::setTexX(int tX)
+{
+    PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->tX, tX);
+}
+
+void Landscape::setTexY(int tY)
+{
+    PropertyManagers::getInstance()->getIntPropertyManager()->setValue(this->tY, tY);
 }
 
 void Landscape::setLeft(int left)

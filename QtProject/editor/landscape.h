@@ -17,6 +17,12 @@ public:
     void paint(QPainter *painter, QPaintEvent *event, Scene *scene);
     void paintFractures(QPainter *painter, QPaintEvent *event, Scene *scene);
 
+    void setTexX(int tX);
+    int getTexX() const { return tX->valueText().toInt(); }
+
+    void setTexY(int tY);
+    int getTexY() const { return tY->valueText().toInt(); }
+
     void setLeft(int left);
     int getLeft() const { return left->valueText().toInt(); }
 
@@ -35,7 +41,8 @@ public:
 
 protected:
     Scene *scene;
-    QtProperty *group;
+    QtProperty *tX;
+    QtProperty *tY;
     QtProperty *left;
     QtProperty *right;
     QtProperty *height;
