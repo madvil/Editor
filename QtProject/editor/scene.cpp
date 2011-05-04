@@ -42,7 +42,7 @@ void Scene::paint(QPainter *painter, QPaintEvent *event, GLWidget *glWidget)
     int deltaHeight = (lastHeight / 6);
 
     painter->fillRect(event->rect(), *background->getBgColor());
-    background->paint(painter, event);
+    background->paint(painter, event, this);
     painter->translate(-sliding, 0);
 
     landscape->paint(painter, event, this);

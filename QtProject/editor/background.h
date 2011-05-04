@@ -3,7 +3,9 @@
 
 #include <QBrush>
 #include "baseobject.h"
+#include "simpletexture.h"
 
+class Scene;
 class QPainter;
 class QPaintEvent;
 
@@ -13,9 +15,11 @@ class Background : public BaseObject
 public:
     Background(QtAbstractPropertyBrowser *propertyBrowser);
 
-    void paint(QPainter *painter, QPaintEvent *event);
+    void paint(QPainter *painter, QPaintEvent *event) { }
+    void paint(QPainter *painter, QPaintEvent *event, Scene *scene);
 
-    QBrush *getBgColor() { return &bgColor; }
+    QBrush *getBgColor();
+    void setBgColor(QColor color);
 
     void setTopBorder(int topBorder);
     int getTopBorder() const { return topBorder->valueText().toInt(); }
@@ -34,17 +38,21 @@ public:
 
     void setSliding(int sliding) { this->sliding = sliding; }
 
+    void setTexture(SimpleTexture *tex) { this->tex = tex; }
+
     virtual void save(QXmlStreamWriter *xml, bool toExport);
     virtual void load(QXmlStreamReader *xml);
 
 protected:
     QBrush bgColor;
-    QBrush bgTexture;
+    SimpleTexture *tex;
     QtProperty *topBorder;
     QtProperty *bottomBorder;
     QtProperty *leftBorder;
     QtProperty *rightBorder;
     QtProperty *opacity;
+    QtProperty *color;
+    QtProperty *onlyInFirstScreen;
     int sliding;
     bool fixed;
 };

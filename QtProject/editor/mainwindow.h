@@ -67,6 +67,8 @@ private slots:
     void on_actionLoad_triggered();
     void on_actionSave_as_new_triggered();
     void on_actionSave_triggered();
+    void on_actionSet_landscape_texture_triggered();
+    void on_actionSet_background_texture_triggered();
 };
 
 #endif // MAINWINDOW_H

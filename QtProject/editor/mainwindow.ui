@@ -508,8 +508,16 @@ color:rgb(255,255,255);
      <string>Edit</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionSet_landscape_texture"/>
+    <addaction name="actionSet_background_texture"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuTools"/>
   </widget>
   <action name="actionNew">
    <property name="text">
@@ -539,6 +547,16 @@ color:rgb(255,255,255);
   <action name="actionExport">
    <property name="text">
     <string>Export</string>
+   </property>
+  </action>
+  <action name="actionSet_landscape_texture">
+   <property name="text">
+    <string>Set landscape texture</string>
+   </property>
+  </action>
+  <action name="actionSet_background_texture">
+   <property name="text">
+    <string>Set background texture</string>
    </property>
   </action>
  </widget>

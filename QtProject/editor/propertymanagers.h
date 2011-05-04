@@ -21,6 +21,7 @@ public:
     QtSizePolicyPropertyManager *getSizePolicyPropertyManager() const { return sizePolicyManager;   }
     QtEnumPropertyManager *getEnumPropertyManager()             const { return enumManager;         }
     QtGroupPropertyManager *getGroupPropertyManager()           const { return groupManager;        }
+    QtColorPropertyManager *getColorPropertyManager()           const { return colorManager;        }
 
     int count() { return params.size(); }
     QtAbstractPropertyManager *getSomePropertyManager(int ind)  const { return params.at(ind);      }
@@ -38,6 +39,7 @@ protected:
     QtSizePolicyPropertyManager *sizePolicyManager;
     QtEnumPropertyManager *enumManager;
     QtGroupPropertyManager *groupManager;
+    QtColorPropertyManager *colorManager;
 };
 
 #endif // PROPERTYMANAGERS_H

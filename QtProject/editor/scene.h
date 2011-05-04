@@ -41,6 +41,7 @@ public:
     int getWorldHeight() const { return worldHeight->valueText().toInt(); }
 
     Landscape *getLandscape() const { return landscape; }
+    Background *getBackground() const { return background; }
 
     virtual void save(QXmlStreamWriter *xml, bool toExport);
     virtual void load(QXmlStreamReader *xml);

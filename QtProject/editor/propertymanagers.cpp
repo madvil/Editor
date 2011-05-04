@@ -17,15 +17,17 @@ PropertyManagers::PropertyManagers(QtAbstractPropertyBrowser *parent)
     sizePolicyManager = new QtSizePolicyPropertyManager(this->parent);
     enumManager = new QtEnumPropertyManager(this->parent);
     groupManager = new QtGroupPropertyManager(this->parent);
+    colorManager = new QtColorPropertyManager(this->parent);
 
-    params << boolManager << intManager << doubleManager << stringManager <<
-                sizeManager << rectManager << sizePolicyManager << enumManager << groupManager;
+//    params << boolManager << intManager << doubleManager << stringManager <<
+//                sizeManager << rectManager << sizePolicyManager << enumManager << groupManager;
 
     QtCheckBoxFactory *checkBoxFactory = new QtCheckBoxFactory(this->parent);
     QtSpinBoxFactory *spinBoxFactory = new QtSpinBoxFactory(this->parent);
     QtDoubleSpinBoxFactory *doubleSpinBoxFactory = new QtDoubleSpinBoxFactory(this->parent);
     QtLineEditFactory *lineEditFactory = new QtLineEditFactory(this->parent);
     QtEnumEditorFactory *comboBoxFactory = new QtEnumEditorFactory(this->parent);
+    QtColorEditorFactory *colorEditorFactory = new QtColorEditorFactory(this->parent);
 
     this->parent->setFactoryForManager(boolManager, checkBoxFactory);
     this->parent->setFactoryForManager(intManager, spinBoxFactory);
@@ -36,6 +38,7 @@ PropertyManagers::PropertyManagers(QtAbstractPropertyBrowser *parent)
     this->parent->setFactoryForManager(sizePolicyManager->subIntPropertyManager(), spinBoxFactory);
     this->parent->setFactoryForManager(sizePolicyManager->subEnumPropertyManager(), comboBoxFactory);
     this->parent->setFactoryForManager(enumManager, comboBoxFactory);
+    this->parent->setFactoryForManager(colorManager, colorEditorFactory);
 }
 
 PropertyManagers::~PropertyManagers()
@@ -49,6 +52,7 @@ PropertyManagers::~PropertyManagers()
     delete sizePolicyManager;
     delete enumManager;
     delete groupManager;
+    delete colorManager;
 }
 
 PropertyManagers *PropertyManagers::getInstance()

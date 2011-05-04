@@ -307,3 +307,15 @@ void MainWindow::on_actionExport_triggered()
 {
     save(QFileDialog::getSaveFileName(this, tr("Level"), ".", tr("XML (*.xml)")), true);
 }
+
+void MainWindow::on_actionSet_landscape_texture_triggered()
+{
+    scene->getLandscape()->setTexture(TexturesManager::getInstance()->getTexture(
+                                          QFileDialog::getOpenFileName(this, tr("Picture"), ".", tr("PNG (*.png)"))));
+}
+
+void MainWindow::on_actionSet_background_texture_triggered()
+{
+    scene->getBackground()->setTexture(TexturesManager::getInstance()->getTexture(
+                                          QFileDialog::getOpenFileName(this, tr("Picture"), ".", tr("PNG (*.png)"))));
+}

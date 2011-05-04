@@ -145,46 +145,50 @@ void Landscape::paint(QPainter *painter, QPaintEvent *event, Scene *scene)
     }
 
     painter->beginNativePainting();
-
-    if (tex != 0) {
-        glDisable(GL_BLEND);
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, tex->id);
-    }
-
-    GLUtesselator *tobj = gluNewTess();
-    gluTessProperty(tobj, GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_ODD);
-    gluTessProperty(tobj, GLU_TESS_BOUNDARY_ONLY, 0);
-    gluTessProperty(tobj, GLU_TESS_TOLERANCE, 0);
-
-    gluTessCallback(tobj, GLU_TESS_BEGIN, (TessFuncPtr)glBegin);
-    gluTessCallback(tobj, GLU_TESS_END, (TessFuncPtr)glEnd);
-    gluTessCallback(tobj, GLU_TESS_VERTEX, (TessFuncPtr)tessVertex);
-
-    glColor3f(1.0, 1.0, 1.0);
-    gluTessBeginPolygon(tobj, NULL);
     {
-        gluTessBeginContour(tobj);
-        {
-            for (int i = 0; i < lastSize; i++)
-                gluTessVertex(tobj, coords[i], coords[i]);
+        if (tex != 0) {
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, tex->id);
+
+            glColor4f(1.0, 1.0, 1.0, 1.0);
         }
-        gluTessEndContour(tobj);
+
+        GLUtesselator *tobj = gluNewTess();
+        gluTessProperty(tobj, GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_ODD);
+        gluTessProperty(tobj, GLU_TESS_BOUNDARY_ONLY, 0);
+        gluTessProperty(tobj, GLU_TESS_TOLERANCE, 0);
+
+        gluTessCallback(tobj, GLU_TESS_BEGIN, (TessFuncPtr)glBegin);
+        gluTessCallback(tobj, GLU_TESS_END, (TessFuncPtr)glEnd);
+        gluTessCallback(tobj, GLU_TESS_VERTEX, (TessFuncPtr)tessVertex);
+
+        glColor3f(1.0, 1.0, 1.0);
+        gluTessBeginPolygon(tobj, NULL);
+        {
+            gluTessBeginContour(tobj);
+            {
+                for (int i = 0; i < lastSize; i++)
+                    gluTessVertex(tobj, coords[i], coords[i]);
+            }
+            gluTessEndContour(tobj);
+        }
+        gluTessEndPolygon(tobj);
+
+        gluDeleteTess(tobj);
+
+        glDisable(GL_TEXTURE_2D);
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glColor3f(0.0, 1.0, 0.0);
+
+        glVertexPointer(2, GL_FLOAT, 0, _coords);
+        glDrawArrays(GL_LINE_LOOP, 0, lastSize);
+
+        glColor3f(1.0, 1.0, 1.0);
+        glDisableClientState(GL_VERTEX_ARRAY);
     }
-    gluTessEndPolygon(tobj);
-
-    gluDeleteTess(tobj);
-
-    glDisable(GL_TEXTURE_2D);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glColor3f(0.0, 1.0, 0.0);
-
-    glVertexPointer(2, GL_FLOAT, 0, _coords);
-    glDrawArrays(GL_LINE_LOOP, 0, lastSize);
-
-    glColor3f(1.0, 1.0, 1.0);
-    glDisableClientState(GL_VERTEX_ARRAY);
-
     painter->endNativePainting();
 }
 
@@ -262,6 +266,13 @@ void Landscape::save(QXmlStreamWriter *xml, bool toExport)
         xml->writeAttribute("right", right->valueText());
         xml->writeAttribute("height", height->valueText());
 
+        QFileInfo fInfo(tex->path);
+        if (toExport) {
+            xml->writeAttribute("texture", fInfo.fileName());
+        } else {
+            xml->writeAttribute("texture", fInfo.canonicalFilePath());
+        }
+
         foreach (Mover *m, fractures) {
             xml->writeStartElement("fracture");
             {
@@ -280,6 +291,7 @@ void Landscape::load(QXmlStreamReader *xml)
     setLeft(xml->attributes().value("left").toString().toInt());
     setRight(xml->attributes().value("right").toString().toInt());
     setHeight(xml->attributes().value("height").toString().toInt());
+    tex = TexturesManager::getInstance()->getTexture(xml->attributes().value("texture").toString());
 
     xml->readNext();
     while (!xml->atEnd()) {

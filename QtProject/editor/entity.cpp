@@ -31,6 +31,7 @@ void Entity::paint(QPainter *painter, QPaintEvent *event, Scene *scene)
     float ratio = scene->getRatio();
     int x = getPosX() * ratio;
     int y = scene->convertWorldCoordToWindow(getPosY());
+    int z = getPosZ();
     int w = getWidth() * ratio;
     int h = getHeight() * ratio;
     if (tex == 0)
@@ -38,45 +39,49 @@ void Entity::paint(QPainter *painter, QPaintEvent *event, Scene *scene)
 
     if (!((x - scene->getSlide() < 0 || x - scene->getSlide() > event->rect().width()) &&
                        (x + w - scene->getSlide() < 0 || x + w - scene->getSlide() > event->rect().width()))) {
-        float _x = getTexX();
-        float _y = getTexY();
-
         painter->beginNativePainting();
-
-        float coords[8] =
         {
-            x,     y,
-            x + w, y,
-            x + w, y + h,
-            x    , y + h,
-        };
+            float _x = getTexX();
+            float _y = getTexY();
 
-        float t_coords[8] =
-        {
-            0.0, 0.0,
-            _x,  0.0,
-            _x,  _y,
-            0.0, _y
-        };
+            float coords[12] =
+            {
+                x,     y,     z,
+                x + w, y,     z,
+                x + w, y + h, z,
+                x    , y + h, z,
+            };
 
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        glColor3f(1.0, 1.0, 1.0);
+            float t_coords[8] =
+            {
+                0.0, 0.0,
+                _x,  0.0,
+                _x,  _y,
+                0.0, _y
+            };
 
-        if (tex != 0) {
-            glEnable(GL_BLEND);
-            glEnable(GL_TEXTURE_2D);
-            glBindTexture(GL_TEXTURE_2D, tex->id);
+            glEnableClientState(GL_VERTEX_ARRAY);
+            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+            glColor3f(1.0, 1.0, 1.0);
+
+            if (tex != 0) {
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, tex->id);
+
+                glColor4f(1.0, 1.0, 1.0, 1.0);
+            }
+
+            glTexCoordPointer(2, GL_FLOAT, 0, t_coords);
+            glVertexPointer(3, GL_FLOAT, 0, coords);
+            glDrawArrays(GL_QUADS, 0, 4);
+
+            glDisable(GL_TEXTURE_2D);
+            glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+            glDisableClientState(GL_VERTEX_ARRAY);
         }
-
-        glTexCoordPointer(2, GL_FLOAT, 0, t_coords);
-        glVertexPointer(2, GL_FLOAT, 0, coords);
-        glDrawArrays(GL_QUADS, 0, 4);
-
-        glDisable(GL_TEXTURE_2D);
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-        glDisableClientState(GL_VERTEX_ARRAY);
-
         painter->endNativePainting();
 
         if (!selected && drawRect)

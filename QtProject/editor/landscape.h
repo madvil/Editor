@@ -32,6 +32,8 @@ public:
     void setHeight(int height);
     int getHeight() const { return height->valueText().toInt(); }
 
+    void setTexture(SimpleTexture *tex) { this->tex = tex; }
+
     Mover *getMover(int w_x, int w_y);
     Mover *addMover(int w_x, int w_y);
     Mover *getSelectedMover() const { return lastSelected; }

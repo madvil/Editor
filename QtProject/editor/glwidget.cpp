@@ -30,7 +30,7 @@ SimpleTexture *GLWidget::loadTexture(QString path)
 
 void GLWidget::initializeGL()
 {
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 }
 
 void GLWidget::paintEvent(QPaintEvent *event)
