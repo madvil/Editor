@@ -7,6 +7,7 @@
 #include "qtpropertybrowser/qttreepropertybrowser.h"
 #include "propertymanagers.h"
 #include "texturelistitemwidget.h"
+#include "atlascreatorwidget.h"
 #include "glwidget.h"
 
 namespace Ui {
@@ -33,6 +34,7 @@ protected:
     QtTreePropertyBrowser *propertyBrowser;
     PropertyManagers *propertyManagers;
     GLWidget *glWidget;
+    AtlasCreatorWidget *atlasCreatorWidget;
     Scene *scene;
     QTimer *timer;
     QString path;

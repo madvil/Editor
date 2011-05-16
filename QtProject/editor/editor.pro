@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     firstplan.cpp \
     landscape.cpp \
     movable.cpp \
-    mover.cpp
+    mover.cpp \
+    atlascreatorwidget.cpp
 
 HEADERS  += mainwindow.h \
     test.h \
@@ -62,10 +63,12 @@ HEADERS  += mainwindow.h \
     simpletexture.h \
     landscape.h \
     movable.h \
-    mover.h
+    mover.h \
+    atlascreatorwidget.h
 
 FORMS    += mainwindow.ui \
-    texturelistitemwidget.ui
+    texturelistitemwidget.ui \
+    atlascreatorwidget.ui
 
 RESOURCES += \
     ui_media.qrc \

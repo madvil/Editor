@@ -86,6 +86,9 @@ void MainWindow::initWidgets()
 
     glWidget = new GLWidget(this, scene);
     ui->glViewVerticalLayout->addWidget(glWidget);
+
+    atlasCreatorWidget = new AtlasCreatorWidget(this);
+    ui->atlasCreatorVerticalLayout->addWidget(atlasCreatorWidget);
 }
 
 void MainWindow::initLayouts()
